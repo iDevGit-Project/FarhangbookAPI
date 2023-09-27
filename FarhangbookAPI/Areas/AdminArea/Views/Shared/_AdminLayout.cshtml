@@ -1,0 +1,503 @@
+﻿<!DOCTYPE html>
+<html direction="rtl" dir="rtl" style="direction: rtl">
+<head>
+	<base href="" />
+	<title>@ViewData["Title"]سامانه باشگاه مشتریان کتابفروشی فرهنگ | خوش آمدید</title>
+	<meta charset="utf-8" />
+	<meta name="description" content="سامانه باشگاه مشتریان کتابفروشی فرهنگ | خوش آمدید" />
+	<meta name="keywords" content="سامانه باشگاه مشتریان کتابفروشی فرهنگ" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta property="og:locale" content="fa_IR" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="سامانه باشگاه مشتریان کتابفروشی فرهنگ" />
+	<meta property="og:url" content="http://www.farhangbooks.ir" />
+	<meta property="og:site_name" content="سامانه باشگاه مشتریان کتابفروشی فرهنگ" />
+	<link rel="canonical" href="http://www.farhangbooks.ir" />
+	<link rel="shortcut icon" href="/assets/media/logos/favicon.png" />
+	<link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+	<link href="/assets/plugins/custom/datatables/datatables.bundle.rtl.css" rel="stylesheet" asp-append-version="true" />
+	<link href="/assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css" asp-append-version="true"/>
+	<link href="/assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+	<link href="/assets/js/datatables/jquery.datatables.min.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body id="kt_app_body" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-sidebar-stacked="true" data-kt-app-sidebar-secondary-enabled="true" data-kt-app-toolbar-enabled="true" class="app-default">
+	<script>var defaultThemeMode = "light"; var themeMode; if (document.documentElement) { if (document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if (localStorage.getItem("data-bs-theme") !== null) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
+	<!--begin::اپلیکیشن-->
+	<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+		<!--begin::page-->
+		<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+			<!--begin::header-->
+			<div id="kt_app_header" class="app-header d-flex d-lg-none" data-kt-sticky="true"
+				 data-kt-sticky-activate="{default: false, lg: true}" data-kt-sticky-name="app-header-sticky"
+				 data-kt-sticky-offset="{default: false, lg: '300px'}">
+				<!--begin::header container-->
+				<div class="app-container container-xxl d-flex align-items-center justify-content-between"
+					 id="kt_app_header_container">
+					<!--begin::logo-->
+					<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
+						<a href="#">
+							<i class="ki-outline ki-delivery fs-2hx"></i>
+						</a>
+					</div>
+					<!--end::logo-->
+					<!--begin::header mobile toggle-->
+					<div class="d-flex align-items-center d-lg-none ms-2" title="مشاهده sidebar menu">
+						<div class="btn btn-icon bg-white bg-opacity-0 bg-hover-opacity-10 w-35px h-35px"
+							 id="kt_app_sidebar_mobile_toggle">
+							<i class="ki-outline ki-abstract-14 fs-2"></i>
+						</div>
+					</div>
+					<!--end::header mobile toggle-->
+				</div>
+				<!--end::header container-->
+			</div>
+			<!--end::header-->
+			<!--begin::wrapper-->
+			<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+				<!--begin::sidebar-->
+				<div id="kt_app_sidebar" class="app-sidebar" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
+					 data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
+					 data-kt-drawer-width="auto" data-kt-drawer-direction="start"
+					 data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+					<!--begin::sidebar primary-->
+					<div class="app-sidebar-primary">
+						<!--begin::logo-->
+						<div class="app-sidebar-logo d-none d-md-flex flex-center pt-10 pb-2" id="kt_app_sidebar_logo">
+							<!--begin::logo image-->
+								<a href="#">
+								<i class="ki-duotone ki-book-open fs-2hx">
+									<span class="path1"></span>
+									<span class="path2"></span>
+									<span class="path3"></span>
+									<span class="path4"></span>
+								</i>
+								</a>
+							<!--end::logo image-->
+						</div>
+						<!--end::logo-->
+						<!--begin::اصلی menu-->
+						<div class="app-sidebar-menu flex-grow-1 hover-scroll-overlay-y my-5" id="kt_aside_menu_wrapper"
+							 data-kt-scroll="true" data-kt-scroll-height="auto"
+							 data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
+							 data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px">
+							<!--begin::menu-->
+							<div id="kt_aside_menu"
+								 class="menu menu-column menu-title-gray-600 menu-state-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500 fw-semibold fs-6"
+								 data-kt-menu="true">
+								<!--begin:menu item-->
+								<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+									 data-kt-menu-placement="left-start" class="menu-item here show py-2">
+									<!--begin:menu link-->
+									<span class="menu-link menu-center">
+										<span class="menu-icon me-0">
+											<i class="ki-outline ki-home-2 fs-2x"></i>
+										</span>
+									</span>
+									<!--end:menu link-->
+									<!--begin:menu sub-->
+									<div class="menu-sub menu-sub-dropdown px-2 py-4 w-250px mh-75 overflow-auto">
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu content-->
+											<div class="menu-content">
+												<span class="menu-section fs-5 fw-bolder ps-1 py-1">دسترسی سریع</span>
+											</div>
+											<!--end:menu content-->
+										</div>
+										<!--end:menu item-->
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu link-->
+											<a class="menu-link active" href="/AdminArea/">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">صفحه اصلی</span>
+											</a>
+											<!--end:menu link-->
+										</div>
+										<!--end:menu item-->
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu link-->
+											<a class="menu-link" href="/AdminArea/Users">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">مدیریت کاربران</span>
+											</a>
+											<!--end:menu link-->
+										</div>
+										<!--end:menu item-->
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu link-->
+											<a class="menu-link" href="/AdminArea/Customer">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">مدیریت مشتریان</span>
+											</a>
+											<!--end:menu link-->
+										</div>
+										<!--end:menu item-->
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu link-->
+											<a class="menu-link" href="/AdminArea/TypeCustomer">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">دسته بندی مشتریان</span>
+											</a>
+											<!--end:menu link-->
+										</div>
+										<!--end:menu item-->
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu link-->
+											<a class="menu-link" href="/AdminArea/GradeStudent">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title"> مدیریت پایه تحصیلی 
+												</span>
+											</a>
+											<!--end:menu link-->
+										</div>
+										<!--begin:menu item-->
+									</div>
+									<!--end:menu sub-->
+								</div>
+								<!--end:menu item-->
+								<!--begin:menu item-->
+								<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+									 data-kt-menu-placement="left-start" class="menu-item here show py-2">
+									<!--begin:menu link-->
+									<span class="menu-link menu-center">
+										<span class="menu-icon me-0">
+											<i class="ki-duotone ki-exit-down fs-2x">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i>
+										</span>
+									</span>
+									<!--end:menu link-->
+									<!--begin:menu sub-->
+									<div class="menu-sub menu-sub-dropdown px-2 py-4 w-250px mh-75 overflow-auto">
+										<!--begin:menu item-->
+										<div class="menu-item">
+											<!--begin:menu link-->
+											<a class="menu-link" href="/Account/Logout">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">خروج از سیستم</span>
+											</a>
+											<!--end:menu link-->
+										</div>
+									</div>
+									<!--end:menu sub-->
+								</div>
+								<!--end:menu item-->
+							</div>
+							<!--end::menu-->
+						</div>
+						<!--end::اصلی menu-->
+						<!--begin::footer-->
+						<div class="d-flex flex-column flex-center pb-4 pb-lg-8" id="kt_app_sidebar_footer">
+							<!--begin::کاربر menu-->
+							<div class="cursor-pointer symbol symbol-40px symbol-circle"
+								 data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-attach="parent"
+								 data-kt-menu-placement="right-end">
+									<img src="/assets/media/avatars/300-2.jpg" alt="تصویر کاربر" />
+							</div>
+							<!--begin::کاربر account menu-->
+							<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
+								 data-kt-menu="true">
+								<!--begin::menu item-->
+								<div class="menu-item px-3">
+									<div class="menu-content d-flex align-items-center px-3">
+										<!--begin::avatar-->
+										<div class="symbol symbol-50px me-5">
+											<img alt="تصویر کاربر" src="/assets/media/avatars/300-2.jpg" />
+										</div>
+										<!--end::avatar-->
+										<!--begin::کاربرname-->
+										<div class="d-flex flex-column">
+											<div class="fw-bold d-flex align-items-center fs-7">
+												حامد شریعتی مهر
+												<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">
+													مدیر سیستم
+												</span>
+											</div>
+											<a href="#" class="fw-semibold FEN text-muted fs-5">info@vokalashop.ir</a>
+										</div>
+										<!--end::کاربرname-->
+									</div>
+								</div>
+								<!--end::menu item-->
+								<!--begin::menu separator-->
+								<div class="separator my-2"></div>
+								<!--end::menu separator-->
+								<!--begin::menu item-->
+								<div class="menu-item px-5">
+										<a href="#" class="menu-link px-5">
+										پروفایل
+										من
+									</a>
+								</div>
+								<!--end::menu item-->
+								<!--begin::menu separator-->
+								<div class="separator my-2"></div>
+								<!--end::menu separator-->
+								<!--begin::menu item-->
+								<div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+									 data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
+									<a href="#" class="menu-link px-5">
+										<span class="menu-title position-relative">
+											پوسته ها
+											<span class="ms-5 position-absolute translate-middle-y top-50 end-0">
+												<i class="ki-outline ki-night-day theme-light-show fs-2"></i>
+												<i class="ki-outline ki-moon theme-dark-show fs-2"></i>
+											</span>
+										</span>
+									</a>
+									<!--begin::menu-->
+									<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px"
+										 data-kt-menu="true" data-kt-element="theme-mode-menu">
+										<!--begin::menu item-->
+										<div class="menu-item px-3 my-0">
+											<a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
+											   data-kt-value="light">
+												<span class="menu-icon" data-kt-element="icon">
+													<i class="ki-outline ki-night-day fs-2"></i>
+												</span>
+												<span class="menu-title">روشن</span>
+											</a>
+										</div>
+										<!--end::menu item-->
+										<!--begin::menu item-->
+										<div class="menu-item px-3 my-0">
+											<a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
+											   data-kt-value="dark">
+												<span class="menu-icon" data-kt-element="icon">
+													<i class="ki-outline ki-moon fs-2"></i>
+												</span>
+												<span class="menu-title">تاریک</span>
+											</a>
+										</div>
+										<!--end::menu item-->
+										<!--begin::menu item-->
+										<div class="menu-item px-3 my-0">
+											<a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
+											   data-kt-value="system">
+												<span class="menu-icon" data-kt-element="icon">
+													<i class="ki-outline ki-screen fs-2"></i>
+												</span>
+												<span class="menu-title">سیستم</span>
+											</a>
+										</div>
+										<!--end::menu item-->
+									</div>
+									<!--end::menu-->
+								</div>
+								<!--end::menu item-->
+								<!--begin::menu item-->
+								<div class="menu-item px-5">
+									<a href="/Account/Logout" class="menu-link px-5">خروج از سیستم</a>
+								</div>
+								<!--end::menu item-->
+							</div>
+							<!--end::کاربر account menu-->
+							
+							<!-- دریافت توکن معتبر از کاربر وارد شده به سیستم-->
+							<div id="token" name="token" hidden>Bearer @ViewBag.Token</div>
+
+						</div>
+						<!--end::footer-->
+					</div>
+					<!--end::sidebar primary-->
+					<!--begin::sidebar secondary-->
+					<div class="app-sidebar-secondary">
+						<!--begin::sidebar secondary menu-->
+						<div class="menu menu-sub-indention menu-rounded menu-column menu-active-bg menu-title-gray-600 menu-icon-gray-400 menu-state-primary menu-arrow-gray-500 fw-semibold fs-6 py-4 py-lg-6"
+							 id="kt_app_sidebar_secondary_menu" data-kt-menu="true">
+							<div id="kt_app_sidebar_secondary_menu_wrapper" class="hover-scroll-y px-1 px-lg-5"
+								 data-kt-scroll="true" data-kt-scroll-activate="{default: true, lg: true}"
+								 data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_app_sidebar_secondary_menu"
+								 data-kt-scroll-offset="20px">
+								<!--begin:menu item-->
+								<div class="menu-item">
+									<!--begin:menu content-->
+									<div class="menu-content">
+										<span class="menu-section fs-5 fw-bolder ps-1 py-1">پیشخوان</span>
+									</div>
+									<!--end:menu content-->
+								</div>
+								<!--end:menu item-->
+								<!--begin:menu item-->
+								<div class="menu-item">
+									<!--begin:menu link-->
+									<a class="menu-link active" href="/AdminArea">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">خانه</span>
+									</a>
+									<!--end:menu link-->
+									<!--begin:menu link-->
+									<a class="menu-link" href="/AdminArea/Users">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">مدیریت کاربران</span>
+									</a>
+									<!--end:menu link-->
+									<!--begin:menu link-->
+									<a class="menu-link" href="/AdminArea/Customer">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">مدیریت مشتریان</span>
+									</a>
+									<!--end:menu link-->
+									<!--begin:menu link-->
+									<a class="menu-link" href="/AdminArea/TypeCustomer">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">دسته بندی مشتریان</span>
+									</a>
+									<!--end:menu link-->
+									<!--begin:menu link-->
+									<a class="menu-link" href="/AdminArea/GradeStudent">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">مدیریت پایه تحصیلی</span>
+									</a>
+									<!--end:menu link-->
+								</div>
+								<!--end:menu item-->
+							</div>
+						</div>
+						<!--end::sidebar secondary menu-->
+					</div>
+					<!--end::sidebar secondary-->
+					<!--begin::sidebar secondary toggle-->
+					<button id="kt_app_sidebar_secondary_toggle"
+							class="app-sidebar-secondary-toggle btn btn-sm btn-icon bg-body btn-color-gray-600 btn-active-color-primary position-absolute translate-middle z-index-1 start-100 end-0 bottom-0 shadow-sm d-none d-lg-flex mb-4"
+							data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
+							data-kt-toggle-name="app-sidebar-secondary-collapse">
+						<i class="ki-outline ki-arrow-left fs-2 rotate-180"></i>
+					</button>
+					<!--end::sidebar secondary toggle-->
+				</div>
+				<!--end::sidebar-->
+				<!--begin::main-->
+				<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+					<!--begin::content wrapper-->
+					<div class="d-flex flex-column flex-column-fluid">
+						<!--begin::toolbar-->
+						<div id="kt_app_toolbar" class="app-toolbar py-4 py-lg-8" data-kt-sticky="true"
+							 data-kt-sticky-name="app-toolbar-sticky"
+							 data-kt-sticky-offset="{default: 'false', lg: '300px'}">
+							<!--begin::toolbar container-->
+							<div id="kt_app_toolbar_container"
+								 class="app-container container-xxl d-flex flex-stack flex-wrap">
+								<!--begin::page title-->
+								<div class="page-title py-2 py-sm-0 d-flex flex-column justify-content-center me-3">
+									<!--begin::title-->
+									<h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+										باشگاه مشتریان کتابفروشی فرهنگ
+										<!--begin::توضیحات-->
+											<span class="page-desc text-muted fs-7 fw-semibold pt-2">نسخه تحت وب : 0.1</span>
+										<!--end::توضیحات-->
+									</h1>
+									<!--end::title-->
+								</div>
+								<!--end::page title-->
+								<!--begin::actions-->
+								<div class="d-flex align-items-center gap-2 gap-lg-3">
+									<a href="#" class="btn btn-icon btn-sm flex-shrink-0 h-40px w-40px bg-body"
+									   id="kt_docs_sweetalert_basic" data-bs-toggle="tooltip" title="ارسال پیامک به مشتریان">
+										<i class="ki-outline ki-messages fs-1 text-primary"></i>
+									</a>
+									<!--begin::اصلی button-->
+									<a href="#" class="btn btn-flex btn-sm h-40px btn-primary">دسترسی سریع به داده ها</a>
+									<!--end::اصلی button-->
+								</div>
+								<!--end::actions-->
+							</div>
+							<!--end::toolbar container-->
+						</div>
+						<!--end::toolbar-->
+						<!--begin::content-->
+						<div id="kt_app_content" class="app-content flex-column-fluid">
+							<!--begin::content container-->
+								@RenderBody()
+							<!--end::content container-->
+						</div>
+						<!--end::content-->
+					</div>
+					<!--end::content wrapper-->
+					<!--begin::footer-->
+					<div id="kt_app_footer" class="app-footer">
+						<!--begin::footer container-->
+						<div class="app-container container-xxl d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
+							<!--begin::copyright-->
+							<div class="text-dark order-2 order-md-1">
+								<span class="text-muted fw-semibold me-1">1402-2023&copy;</span>
+								<a href="#" target="_blank" class="text-gray-800 text-hover-primary">
+									سامانه فروش و
+									انبارداری تحت وب
+								</a>
+							</div>
+							<!--end::copyright-->
+							<!--begin::menu-->
+							<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
+								<li class="menu-item">
+									<a href="#" target="_blank" class="menu-link px-2">درباره ی ما</a>
+								</li>
+								<li class="menu-item">
+									<a href="#" target="_blank" class="menu-link px-2">پشتیبانی</a>
+								</li>
+								<li class="menu-item">
+									<a href="http://www.webnext.ir" target="_blank" class="menu-link px-2">
+										طراحی و
+										توسعه
+									</a>
+								</li>
+							</ul>
+							<!--end::menu-->
+						</div>
+						<!--end::footer container-->
+					</div>
+					<!--end::footer-->
+				</div>
+				<!--end:::main-->
+			</div>
+			<!--end::wrapper-->
+		</div>
+		<!--end::page-->
+	</div>
+	<!--end::اپلیکیشن-->
+	<script>var hostUrl = "/assets/";</script>
+	<script src="/assets/plugins/global/plugins.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/js/scripts.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/datatables/datatables.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/datatables/buttons/export.js" asp-append-version="true"></script>
+	<script src="/assets/js/widgets.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/widgets.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/apps/chat/chat.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/utilities/modals/upgrade-plan.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/utilities/modals/create-campaign.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/utilities/modals/users-search.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/prismjs/prismjs.bundle.js" asp-append-version="true"></script>
+
+	@await RenderSectionAsync("AdminScripts", false)
+	@await RenderSectionAsync("MainScripts", false)
+</body>
+</html>

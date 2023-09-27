@@ -1,0 +1,661 @@
+﻿@model IEnumerable<GradeStudentDto>
+
+@{
+	ViewData["Title:"] = "پنل مدیریت | فراخوانی لیست دسته بندی مشتریان";
+	int counterGradeStudent = 1;
+	string ApiAddress = ViewBag.ApiAddress;
+}
+
+<!--START - Alert Success-->
+<div class="page-loader flex-column bg-dark bg-opacity-25">
+	<span class="spinner-border text-primary" role="status"></span>
+	<span class="text-gray-100 fs-5 mt-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>
+</div>
+<!--END - Alert Success-->
+<!--begin::content container-->
+<div id="kt_app_content_container" class="app-container container-xxl">
+	<!--begin::row-->
+	<div class="row gy-5 g-xl-10">
+		<!--begin::col-->
+		<div class="col-xl-12 mb-xl-12">
+			<!--begin::engage widget 1-->
+			<div class="card h-md-100" dir="rtl">
+				<!--begin::body-->
+				<div class="card-body align-items-start flex-column">
+					<!--begin::heading-->
+					<div class="card-header align-items-start px-0 border-0 pt-50">
+						<h3 class="card-title align-items-start flex-column">
+							<span class="card-label fw-bold text-dark">لیست دسته بندی پایه تحصیلی</span>
+							<span class="text-muted mt-1 fw-semibold fs-7">لیست پایه تحصیلی موجود در برنامه</span>
+						</h3>
+						<a href="/AdminArea/" class="btn btn-sm btn-light-dark h-40px" data-bs-toggle="tooltip" title="بازگشت به صفحه اصلی">
+							<i class="ki-duotone ki-home fs-3">
+							</i>
+							بازگشت
+						</a>
+					</div>
+					<!--end::heading-->
+					<div class="card-header border-0 pt-6">
+						<!--begin::کارت title-->
+						<div class="card-title">
+							<!--begin::جستجو-->
+							<div class="d-flex align-items-center position-relative my-1">
+								<i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
+								<input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="جستجوی اطلاعات">
+							</div>
+							<!--end::جستجو-->
+						</div>
+						<!--begin::کارت title-->
+						<!--begin::کارت toolbar-->
+						<div class="card-toolbar">
+							<!--begin::Toolbar-->
+							<div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+								<!--begin::فیلتر-->
+								<button type="button" class="btn btn-sm btn-light-primary me-3" data-bs-toggle="tooltip" title="فیلتر کردن داده ها از سرور">
+									<i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
+									فیلتر داده ها
+								</button>
+								<!--begin::Menu 1-->
+								<!--end::Menu 1-->
+								<!--end::فیلتر-->
+								<!--begin::خروجی-->
+								<button type="button" class="btn btn-sm btn-light-success me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="tooltip" title="دریافت خروجی از اطلاعات جدول">
+									<i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
+									دریافت خروجی
+								</button>
+								<div id="kt_datatable_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+									<div class="menu-item px-3">
+										<a href="#" class="menu-link px-3" data-kt-export="pdf">
+											Export as PDF
+										</a>
+									</div>
+									<div class="menu-item px-3">
+										<a href="#" class="menu-link px-3" data-kt-export="excel">
+											Export as Excel
+										</a>
+									</div>
+									<div id="kt_datatable_buttons" class="d-none"></div>
+								</div>
+								<!--end::خروجی-->
+								<!--begin::Add customer-->
+								<button type="button" class="btn btn-sm btn-primary" title="اضافه کردن" data-bs-toggle="modal" data-bs-target="#kt_modal_new_GradeStudent">
+									<i class="ki-duotone ki-plus fs-2"></i>
+									ثبت پایه تحصیلی جدید
+								</button>
+								<!--end::Add customer-->
+							</div>
+							<!--end::Toolbar-->
+						</div>
+						<!--end::کارت toolbar-->
+					</div>
+					<!--end::Toolbar-->
+					<!--begin::TABELS-->
+					<table id="GradeStudent_DataTable" class="table text-center table-rounded table-striped border table-row-bordered gy-5 gs-7">
+						<thead>
+							<tr class="fw-semibold fs-6">
+								<th class="fw-semibold fw-bolder fs-6">ردیف</th>
+								<th class="fw-semibold fw-bolder fs-6">پایه تحصیلی</th>
+								<th class="fw-semibold fw-bolder fs-6">عملیات داده ها</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>@counterGradeStudent</td>
+									<td>@item.GradeName</td>
+									<td class="justify-content-start flex-shrink-0">
+										<!--begin::Icon-->
+										<div>
+											<!--begin::ویرایش-->
+											<a href="#" class="bg-hover-light-warning text-hover-warning btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3" data-bs-toggle="tooltip" title="ویرایش" onclick="showGradeStudentName(@item.GradeStudentID)">
+												<i class="ki-outline ki-pencil fs-3"></i>
+											</a>
+											<!--end::ویرایش-->
+											<!--begin::غیرفعال سازی-->
+											<a href="#" class="bg-hover-light-danger text-hover-danger btn btn-icon btn-color-muted btn-bg-light btn-active-color-danger btn-sm me-3" data-bs-toggle="tooltip" title="حذف کردن" onclick="showGradeStudentDeleteName(@item.GradeStudentID)">
+												<i class="ki-outline ki-trash fs-3"></i>
+											</a>
+											<!--begin::غیرفعال سازی-->
+										</div>
+										<!--end::Icon-->
+									</td>
+								</tr>
+								counterGradeStudent++;
+							}
+						</tbody>
+					</table>
+					<!--end::TABELS-->
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12 text-center">
+							<h3 class="card-title align-items-start flex-column">
+								<span class="text-muted mt-1 fw-semibold fs-7">لیست پایه های تحصیلی موجود : <b class="badge badge-light-success fw-bolder" data-bs-toggle="tooltip" title="تعداد پایه های تحصیلی ثبت شده"> @Model.Count() </b> می باشد. </span>
+							</h3>
+						</div>
+					</div>
+					<!--end::links-->
+				</div>
+				<!--end::body-->
+			</div>
+			<!--end::engage widget 1-->
+		</div>
+		<!--end::col-->
+	</div>
+	<!--end::row-->
+</div>
+<!--end::content container-->
+<!-- مودال مربوط به ثبت پایه تحصیلی جدید -->
+<div class="modal fade" id="kt_modal_new_GradeStudent" tabindex="-1" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<!--begin::Modal dialog-->
+	<div class="modal-dialog modal-dialog-centered mw-750px">
+		<!--begin::Modal content-->
+		<div class="modal-content rounded">
+			<!--begin::Modal header-->
+			<div class="modal-header pb-0 border-0 justify-content-end">
+				<!--begin::Close-->
+				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+					<i class="ki-outline ki-cross fs-1"></i>
+				</div>
+				<!--end::Close-->
+			</div>
+			<!--begin::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+				<!--begin:Form-->
+				<form>
+					<!--begin::Heading-->
+					<div class="mb-13 text-center">
+						<!--begin::Title-->
+						<h1 class="mb-3">ثبت پایه تحصیلی جدید</h1>
+						<!--end::Title-->
+						<!--begin::توضیحات-->
+						<div class="text-muted fw-semibold fs-5">
+							جهت ثبت پایه تحصیلی، نام آن را وارد کرده و بر روی دکمه <span class="fw-bold link-primary"> ثبت اطلاعات </span> کلیک نمایید.
+						</div>
+						<!--end::توضیحات-->
+					</div>
+					<!--end::Heading-->
+					<!--begin::Input group-->
+					<div class="d-flex flex-column mb-8 fv-row">
+						<!--begin::Tags-->
+						<label class="d-flex align-items-center fs-6 fw-semibold fw-bolder mb-2">
+							<span class="required">نوع پایه تحصیلی جدید</span>
+							<span class="ms-1" data-bs-toggle="tooltip" title="ثبت اطلاعات از پیش دبستانی تا دوازدهم">
+								<i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+							</span>
+						</label>
+						<!--end::Tags-->
+						<input type="text" id="GradeName" class="form-control form-control-solid" placeholder="نوع پایه تحصیلی را وارد نمایید" />
+
+						<input id="UserID" name="UserID" value="@ViewBag.UserID" hidden />
+						<span class="badge badge-light-danger text-center" id="spanValidateAdd"></span>
+					</div>
+					<!--end::Input group-->
+					<!--begin::Actions-->
+					<div class="text-center">
+						<button id="btnAddGradeStudent" class="btn btn-sm btn-primary me-3"><i class="ki-duotone ki-plus fs-2"></i><span class="indicator-label">ثبت اطلاعات</span></button>
+						<button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
+					</div>
+					<!--end::Actions-->
+				</form>
+				<!--end:Form-->
+			</div>
+			<!--end::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
+</div>
+<!-- مودال مربوط به ثبت پایه تحصیلی جدید -->
+<!--======================================================================================-->
+<!-- مودال مربوط به ویرایش پایه تحصیلی-->
+<div class="modal fade" id="kt_modal_edit_GradeStudent" tabindex="-1" aria-hidden="true">
+	<!--begin::Modal dialog-->
+	<div class="modal-dialog modal-dialog-centered mw-450px">
+		<!--begin::Modal content-->
+		<div class="modal-content rounded">
+			<!--begin::Modal header-->
+			<div class="modal-header pb-0 border-0 justify-content-end">
+				<!--begin::Close-->
+				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+					<i class="ki-outline ki-cross fs-1"></i>
+				</div>
+				<!--end::Close-->
+			</div>
+			<!--begin::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+				<!--begin:Form-->
+				<form>
+					<!--begin::Heading-->
+					<div class="mb-13 text-center">
+						<!--begin::Title-->
+						<h1 class="mb-3">ویرایش اطلاعات پایه تحصیلی</h1>
+						<!--end::Title-->
+					</div>
+					<!--end::Heading-->
+					<!--begin::Input group-->
+					<div class="d-flex flex-column mb-8 fv-row">
+						<!--begin::Tags-->
+						<label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+							<span class="required">نام پایه تحصیلی جدید</span>
+							<span class="ms-1" data-bs-toggle="tooltip" title="ویرایش اطلاعات از پیش دبستانی تا دوازدهم">
+								<i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+							</span>
+						</label>
+						<!--end::Tags-->
+						<input type="text" id="GradeNameEdit" class="form-control form-control-solid fw-semibold fw-bold" placeholder="نوع مشتری ثبت شده" />
+					</div>
+					<!--end::Input group-->
+					<!--begin::Actions-->
+					<div class="text-center">
+						<button id="btnEditGradeStudent" class="btn btn-sm btn-primary me-3"> <i class="ki-outline ki-pencil fs-2"></i><span class="indicator-label"> ویرایش اطلاعات </span></button>
+						<button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
+					</div>
+					<input id="gradeStudentid" type="hidden" />
+					<!--end::Actions-->
+				</form>
+				<!--end:Form-->
+			</div>
+			<!--end::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
+</div>
+<!-- مودال مربوط به ویرایش پایه تحصیلی-->
+<!--======================================================================================-->
+<!-- مودال مربوط به حذف پایه تحصیلی-->
+<div class="modal fade" id="kt_modal_delete_GradeStudent" tabindex="-1" aria-hidden="true">
+	<!--begin::Modal dialog-->
+	<div class="modal-dialog modal-dialog-centered mw-450px">
+		<!--begin::Modal content-->
+		<div class="modal-content rounded">
+			<!--begin::Modal header-->
+			<div class="modal-header pb-0 border-0 justify-content-end">
+				<!--begin::Close-->
+				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+					<i class="ki-outline ki-cross fs-1"></i>
+				</div>
+				<!--end::Close-->
+			</div>
+			<!--begin::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+				<!--begin:Form-->
+				<form>
+					<!--begin::Heading-->
+					<div class="mb-13 text-center">
+						<!--begin::Title-->
+						<h1 class="mb-3">حذف اطلاعات</h1>
+						<!--end::Title-->
+					</div>
+					<!--end::Heading-->
+					<!--begin::Input group-->
+					<div class="d-flex flex-column mb-8 fv-row">
+						<!--begin::Tags-->
+						<h1 class="text-center fw-normal fs-6 mb-3">آیا از حذف اطلاعات مطمئن هستید؟</h1>
+						<!--end::Tags-->
+						<input type="hidden" id="gradeStudentid" />
+					</div>
+					<!--end::Input group-->
+					<!--begin::Actions-->
+					<div class="text-center">
+						<button id="btnDeleteGradeStudent" class="btn btn-sm btn-danger me-3">
+							<i class="ki-outline ki-trash fs-2"></i><span class="indicator-label"> حذف اطلاعات </span>
+						</button>
+						<button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
+					</div>
+					<!--end::Actions-->
+				</form>
+				<!--end:Form-->
+			</div>
+			<!--end::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
+</div>
+<!-- مودال مربوط به ویرای پایه تحصیلی-->
+@section AdminScripts{
+
+	<!-- اسکریپت آژاکس مربوط به نمایش اطلاعات پایه تحصیلی -->
+	<script>
+		function showGradeStudentName(gradeStudentid) {
+			var serviceUrl = '@ApiAddress' + "GradeStudentsApi/GetById?gradeStudentid=" + gradeStudentid;
+			$.ajax({
+				type: "Get",
+				url: serviceUrl,
+				dataType: "json",
+				success: function (xhr) {
+					$("#GradeNameEdit").val(xhr.data.gradeName);
+					$("#gradeStudentid").val(xhr.data.gradeStudentID);
+					$("#kt_modal_edit_GradeStudent").modal('show');
+				}
+			});
+		}
+	</script>
+	<!-- اسکریپت آژاکس مربوط به نمایش پایه تحصیلی-->
+	<!--==================================================================-->
+	<!-- اسکریپت آژاکس مربوط به نمایش اطلاعات جهت حذف پایه تحصیلی-->
+	<script>
+		function showGradeStudentDeleteName(gradeStudentid) {
+			var serviceUrl = '@ApiAddress' + "GradeStudentsApi/GetById?gradeStudentid=" + gradeStudentid;
+			$.ajax({
+				type: "Get",
+				url: serviceUrl,
+				dataType: "json",
+				success: function (xhr) {
+					$("#gradeStudentid").val(xhr.data.gradeStudentID);
+					$("#kt_modal_delete_GradeStudent").modal('show');
+				}
+			});
+		}
+	</script>
+	<!-- اسکریپت آژاکس مربوط به نمایش اطلاعات جهت حذف پایه تحصیلی-->
+	<!--==================================================================-->
+	<!-- اسکریپت آژاکس مربوط به ثبت پایه تحصیلی جدید -->
+	<script>
+		$("#btnAddGradeStudent").on('click', function (e) {
+			e.preventDefault();
+			$.ajax({
+				type: 'Post',
+				url: '@ApiAddress' + "GradeStudentsApi/CreateGradeStudentApi",
+
+				// دریافت توکن معتبر از کاربر وارد شده به سیستم جهت انجام عملیات
+				headers: { 'Authorization': $("#token").html().trim() },
+				data: { gradename: $("#GradeName").val(), userid: $("#UserID").val() },
+				success: function (xml, textStatus, xhr) {
+					// موجود هستند API پارامترهای استانداردی که از
+					if (xhr.status == '200') {
+						// نمایش فرم انیمیشن در زمان ثبت اطلاعات
+						const loadingEl = document.createElement("div");
+						document.body.prepend(loadingEl);
+						loadingEl.classList.add("page-loader");
+						loadingEl.classList.add("flex-column");
+						loadingEl.classList.add("bg-dark");
+						loadingEl.classList.add("bg-opacity-25");
+						loadingEl.innerHTML = `
+								<span class="spinner-border text-primary" role="status"></span>
+								<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+						KTApp.showPageLoading();
+						setTimeout(function () {
+							KTApp.hidePageLoading();
+							loadingEl.remove();
+							window.location.reload();
+						}, 3550);
+						setTimeout(function () {
+							toastr.options = {
+								"debug": false,
+								"closeButton": false,
+								"newestOnTop": false,
+								"progressBar": true,
+								"positionClass": "toastr-top-center",
+								"preventDuplicates": false,
+								"showDuration": "600",
+								"hideDuration": "1000",
+								"timeOut": "1800",
+								"extendedTimeOut": "1000",
+								"showEasing": "swing",
+								"hideEasing": "linear",
+								"showMethod": "fadeIn",
+								"hideMethod": "fadeOut"
+							};
+							toastr.success("ثبت اطلاعات با موفقیت انجام شد.");
+						}, 1300);
+					}
+					if (xhr.status == '550') {
+						const loadingEl = document.createElement("div");
+						document.body.prepend(loadingEl);
+						loadingEl.classList.add("page-loader");
+						loadingEl.classList.add("flex-column");
+						loadingEl.classList.add("bg-dark");
+						loadingEl.classList.add("bg-opacity-25");
+						loadingEl.innerHTML = `
+						<span class="spinner-border text-primary" role="status"></span>
+						<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+						KTApp.showPageLoading();
+						setTimeout(function () {
+							KTApp.hidePageLoading();
+							loadingEl.remove();
+							window.location.reload();
+						}, 3550);
+						setTimeout(function () {
+							toastr.options = {
+								"debug": false,
+								"newestOnTop": false,
+								"progressBar": true,
+								"positionClass": "toastr-top-center",
+								"preventDuplicates": false,
+								"showDuration": "6000",
+								"hideDuration": "1000",
+								"timeOut": "1700",
+								"extendedTimeOut": "1000",
+								"showEasing": "swing",
+								"hideEasing": "linear",
+								"showMethod": "fadeIn",
+								"hideMethod": "fadeOut"
+							};
+							toastr.warning("کاربرگرامی: این پایه تحصیلی قبلاٌ ثبت شده است.", "هشدار");
+						}, 1300);
+						return false;
+					}
+					else if (xhr.status == '500') {
+						const loadingEl = document.createElement("div");
+						document.body.prepend(loadingEl);
+						loadingEl.classList.add("page-loader");
+						loadingEl.classList.add("flex-column");
+						loadingEl.classList.add("bg-dark");
+						loadingEl.classList.add("bg-opacity-25");
+						loadingEl.innerHTML = `
+						<span class="spinner-border text-primary" role="status"></span>
+						<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+						KTApp.showPageLoading();
+						setTimeout(function () {
+							KTApp.hidePageLoading();
+							loadingEl.remove();
+							window.location.reload();
+						}, 3550);
+						setTimeout(function () {
+							toastr.options = {
+								"debug": false,
+								"newestOnTop": false,
+								"progressBar": true,
+								"positionClass": "toastr-top-center",
+								"preventDuplicates": false,
+								"showDuration": "6000",
+								"hideDuration": "1000",
+								"timeOut": "1700",
+								"extendedTimeOut": "1000",
+								"showEasing": "swing",
+								"hideEasing": "linear",
+								"showMethod": "fadeIn",
+								"hideMethod": "fadeOut"
+							};
+							toastr.error("در ثبت اطلاعات مشکلی بوجود آمده است. لطفاً دقایقی دیگر تلاش نمایید.", "خطا");
+						}, 1300);
+						return false;
+					}
+					else if (xhr.status == '400') {
+						const loadingEl = document.createElement("div");
+						document.body.prepend(loadingEl);
+						loadingEl.classList.add("page-loader");
+						loadingEl.classList.add("flex-column");
+						loadingEl.classList.add("bg-dark");
+						loadingEl.classList.add("bg-opacity-25");
+						loadingEl.innerHTML = `
+						<span class="spinner-border text-primary" role="status"></span>
+						<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+						KTApp.showPageLoading();
+						setTimeout(function () {
+							KTApp.hidePageLoading();
+							loadingEl.remove();
+							window.location.reload();
+						}, 3550);
+						setTimeout(function () {
+							toastr.options = {
+								"debug": false,
+								"newestOnTop": false,
+								"progressBar": true,
+								"positionClass": "toastr-top-center",
+								"preventDuplicates": false,
+								"showDuration": "6000",
+								"hideDuration": "1000",
+								"timeOut": "1700",
+								"extendedTimeOut": "1000",
+								"showEasing": "swing",
+								"hideEasing": "linear",
+								"showMethod": "fadeIn",
+								"hideMethod": "fadeOut"
+							};
+							toastr.info("کاربرگرامی: وارد کردن نام پایه تحصیلی الزامی است.", "خطا");
+						}, 1300);
+						return false;
+					}
+				},
+			})
+		});
+	</script>
+	<!-- اسکریپت آژاکس مربوط به ثبت پایه تحصیلی جدید -->
+	<!--==================================================================-->
+	<!-- اسکریپت آژاکس مربوط به ویرایش پایه تحصیلی-->
+	<script>
+		$("#btnEditGradeStudent").on('click', function (e) {
+			e.preventDefault();
+			const model = {
+				gradeName: $("#GradeNameEdit").val().trim(),
+				gradeStudentID: $("#gradeStudentid").val().trim()
+			};
+			$.ajax({
+				type: 'Put',
+				url: '@ApiAddress' + "GradeStudentsApi/UpdateGradeStudentApi",
+
+				// دریافت توکن معتبر از کاربر وارد شده به سیستم جهت انجام عملیات
+				headers: { 'Authorization': $("#token").html().trim() },
+				data: JSON.stringify(model),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (xml, textStatus, xhr) {
+					if (xhr.status == '200') {
+						// نمایش فرم انیمیشن در زمان ویرایش اطلاعات
+						const loadingEl = document.createElement("div");
+						document.body.prepend(loadingEl);
+						loadingEl.classList.add("page-loader");
+						loadingEl.classList.add("flex-column");
+						loadingEl.classList.add("bg-dark");
+						loadingEl.classList.add("bg-opacity-25");
+						loadingEl.innerHTML = `
+						<span class="spinner-border text-primary" role="status"></span>
+						<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+						KTApp.showPageLoading();
+						setTimeout(function () {
+							KTApp.hidePageLoading();
+							loadingEl.remove();
+							window.location.reload();
+						}, 3600);
+						setTimeout(function () {
+							toastr.options = {
+								"debug": false,
+								"newestOnTop": false,
+								"progressBar": true,
+								"positionClass": "toastr-top-center",
+								"preventDuplicates": false,
+								"showDuration": "600",
+								"hideDuration": "1000",
+								"timeOut": "1600",
+								"extendedTimeOut": "1000",
+								"showEasing": "swing",
+								"hideEasing": "linear",
+								"showMethod": "fadeIn",
+								"hideMethod": "fadeOut"
+							};
+							toastr.info("ویرایش اطلاعات با موفقیت انجام شد.");
+						}, 1300);
+					}
+				}
+			});
+		});
+	</script>
+	<!-- اسکریپت آژاکس مربوط به ویرایش پایه تحصیلی-->
+	<!--==================================================================-->
+	<!-- اسکریپت آژاکس مربوط به حذف پایه تحصیلی-->
+	<script>
+		$("#btnDeleteGradeStudent").on('click', function (e) {
+			e.preventDefault();
+			const model = {
+				gradeStudentID: $("#gradeStudentid").val().trim()
+			};
+			$.ajax({
+				type: 'Delete',
+				url: '@ApiAddress' + "GradeStudentsApi/DeleteGradeStudentApi",
+				data: JSON.stringify(model),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (xml, textStatus, xhr) {
+					if (xhr.status == '200') {
+						// نمایش فرم انیمیشن در زمان ویرایش اطلاعات
+						const loadingEl = document.createElement("div");
+						document.body.prepend(loadingEl);
+						loadingEl.classList.add("page-loader");
+						loadingEl.classList.add("flex-column");
+						loadingEl.classList.add("bg-dark");
+						loadingEl.classList.add("bg-opacity-25");
+						loadingEl.innerHTML = `
+						<span class="spinner-border text-primary" role="status"></span>
+						<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>
+										`;
+						KTApp.showPageLoading();
+						setTimeout(function () {
+							KTApp.hidePageLoading();
+							loadingEl.remove();
+							window.location.reload();
+						}, 3600);
+						setTimeout(function () {
+							toastr.options = {
+								"debug": false,
+								"newestOnTop": false,
+								"progressBar": true,
+								"positionClass": "toastr-top-center",
+								"preventDuplicates": false,
+								"showDuration": "600",
+								"hideDuration": "1000",
+								"timeOut": "1600",
+								"extendedTimeOut": "1000",
+								"showEasing": "swing",
+								"hideEasing": "linear",
+								"showMethod": "fadeIn",
+								"hideMethod": "fadeOut"
+							};
+							toastr.error("حذف اطلاعات با موفقیت انجام شد.");
+						}, 1300);
+					}
+				}
+			});
+		});
+	</script>
+	<!-- اسکریپت آژاکس مربوط به ویرایش پایه تحصیلی-->
+	<!--==================================================================-->
+	<!-- اسکریپت تمرکز بر روی ورودی مودال-->
+	<script>
+		$('#kt_modal_new_GradeStudent').on('shown.bs.modal', function () {
+			$('#GradeName').focus();
+		})
+	</script>
+	<!--اسکریپت تمرکز بر روی ورودی مودال-->
+	<!--==================================================================-->
+	<!--اسکریپت تمرکز بر روی ویرایش ورودی مودال-->
+	<script>
+		$('#kt_modal_edit_GradeStudent').on('shown.bs.modal', function () {
+			$('#GradeNameEdit').focus();
+		})
+	</script>
+	<!--اسکریپت تمرکز بر روی ویرایش ورودی مودال-->
+	<!--==================================================================-->
+	<script>
+		// For Export DataTable
+	</script>
+
+	<script>
+		// For Search DataTable
+	</script>
+}

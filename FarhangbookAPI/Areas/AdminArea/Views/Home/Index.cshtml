@@ -1,0 +1,106 @@
+﻿@{
+	ViewData["Title:"] = "پنل مدیریت | باشگاه مشتریان کتابفروشی فرهنگ";
+}
+
+<div class="page-loader flex-column bg-dark bg-opacity-25">
+	<span class="spinner-border text-primary" role="status"></span>
+	<span class="text-gray-100 fs-5 mt-5 mt-5">سیستم در حال بررسی درخواست ...</span>
+</div>
+<!--======================================================================================-->
+
+<!--begin::content container-->
+<div id="kt_app_content_container" class="app-container container-xxl">
+	<!--begin::row-->
+	<div class="row gy-5 g-xl-10">
+		<!--begin::col-->
+		<div class="col-xl-12 mb-xl-12">
+			<!--begin::engage widget 1-->
+			<div class="card h-md-100" dir="rtl">
+				<!--begin::body-->
+				<div class="card-body d-flex flex-column flex-center">
+					<!--begin::heading-->
+					<div class="mb-2">
+						<!--begin::title-->
+						<h1 class="fw-bolder text-dark text-center lh-lg">
+							باشگاه مشتریان ( فروشگاه کتاب فرهنگ ) کتابفروشی فرهنگ
+							<br />
+							<span class="fw-semibold text-gray-800 fs-5">
+								نسخه سالیانه : 1403 - 1402
+							</span>
+						</h1>
+						<!--end::title-->
+						<!--begin::illustration-->
+						<div class="py-10 text-center">
+							<img src="/assets/media/logos/logo.png"
+								 class="theme-light-show w-400px" alt="لوگوی کتابفروشی فرهنگ" />
+							<img src="/assets/media/logos/logo-dark.png"
+								 class="theme-dark-show w-400px" alt="لوگوی کتابفروشی فرهنگ تاریک" />
+@* 							<img src="/assets/media/svg/illustrations/easy/3-dark.svg"
+								 class="theme-dark-show w-200px" alt="" /> *@
+						</div>
+						<!--end::illustration-->
+					</div>
+					<!--end::heading-->
+					<!--begin::links-->
+					<div class="text-center mb-1">
+						<!--begin::link-->
+						<a class="btn btn-sm btn-primary me-2" id="kt_refresh_MainInfo" href="/AdminArea/Customer">ثبت مشتری جدید</a>
+						<!--end::link-->
+					</div>
+					<!--end::links-->
+				</div>
+				<!--end::body-->
+			</div>
+			<!--end::engage widget 1-->
+		</div>
+		<!--end::col-->
+	</div>
+	<!--end::row-->
+</div>
+<!--end::content container-->
+
+
+@section MainScripts{
+	<!-- Refresh Data in Tables -->
+	<script>
+		$('#kt_refresh_MainInfo').on('click', function () {
+			// نمایش فرم انیمیشن در زمان ثبت اطلاعات
+			const loadingEl = document.createElement("div");
+			document.body.prepend(loadingEl);
+			loadingEl.classList.add("page-loader");
+			loadingEl.classList.add("flex-column");
+			loadingEl.classList.add("bg-dark");
+			loadingEl.classList.add("bg-opacity-25");
+			loadingEl.innerHTML = `
+			<span class="spinner-border text-primary" role="status"></span>
+			<span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی درخواست ...</span>`;
+			KTApp.showPageLoading();
+			setTimeout(function () {
+				KTApp.hidePageLoading();
+				loadingEl.remove();
+				window.location.reload();
+			}, 6500);
+			setTimeout(function () {
+				toastr.options = {
+					"debug": false,
+					"closeButton": false,
+					"newestOnTop": false,
+					"progressBar": false,
+					"positionClass": "toastr-top-center",
+					"preventDuplicates": false,
+					"showDuration": "6500",
+					"hideDuration": "6500",
+					"timeOut": "6500",
+					"extendedTimeOut": "6500",
+					"showEasing": "swing",
+					"hideEasing": "linear",
+					"showMethod": "fadeIn",
+					"hideMethod": "fadeOut"
+				};
+			}, 6500);
+			//$('#frmEditProduct')[0].reset();
+			//document.getElementById("frmEditProduct").reset(); //or $('#form2')[0].reset();
+		})
+	</script>
+	<!--===================================================================-->
+}

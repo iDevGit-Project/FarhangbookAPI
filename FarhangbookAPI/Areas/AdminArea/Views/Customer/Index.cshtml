@@ -1,0 +1,955 @@
+﻿@model IEnumerable<CustomerDto>
+@inject FarhangbookAPI.PublicClasses.ConvertDate convertDate
+
+@{
+    ViewData["Title:"] = "پنل مدیریت | فراخوانی لیست اطلاعات کالاها";
+    int counterCustomer = 1;
+    string ApiAddress = ViewBag.ApiAddress;
+}
+
+<!-- آدرس مربوط به فایل سی اس اس تاریخ شمسی -->
+
+<link href="/assets/plugins/persiandate/persian-datepicker.css" rel="stylesheet" asp-append-version="true" />
+
+<div class="page-loader flex-column bg-dark bg-opacity-25">
+    <span class="spinner-border text-primary" role="status"></span>
+    <span class="text-gray-100 fs-5 mt-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>
+</div>
+<!--======================================================================================-->
+<!--begin::content container-->
+<div id="kt_app_content_container" class="app-container container-xxl">
+    <!--begin::row-->
+    <div class="row gy-5 g-xl-10">
+        <!--begin::col-->
+        <div class="col-xl-12 mb-xl-12">
+            <!--begin::engage widget 1-->
+            <div class="card h-md-100" dir="rtl">
+                <!--begin::body-->
+                <div class="card-body align-items-start flex-column">
+                    <!--begin::heading-->
+                    <div class="card-header align-items-start px-0 border-0 pt-50">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label fw-bold text-dark">لیست اطلاعات مشتریان</span>
+                            <span class="text-muted mt-1 fw-semibold fs-7">لیست مشتریان در برنامه</span>
+                        </h3>
+                        <a href="/AdminArea/" class="btn btn-sm btn-light-dark h-40px" data-bs-toggle="tooltip" title="بازگشت به صفحه اصلی">
+                            <i class="ki-duotone ki-home fs-3">
+                            </i>
+                            بازگشت
+                        </a>
+                    </div>
+                    <!--end::heading-->
+                    <div class="card-header border-0 pt-6">
+                        <!--begin::کارت title-->
+                        <div class="card-title">
+                            <!--begin::جستجو-->
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <i class="ki-outline ki-magnifier fs-2 position-absolute ms-4"></i>
+                                <input type="text" id="customerSearch" class="form-control form-control-solid w-250px ps-12" autocomplete="off" placeholder="جستجو اطلاعات">
+                                <div id="autoCompleteDiv"></div>
+                                <!--begin::Spinner-->
+                                <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-1" data-kt-filter="spinner">
+                                    <span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
+                                </span>
+                                <!--end::Spinner-->
+                            </div>
+                            <!--end::جستجو-->
+                            <!--begin::خروجی buttons-->
+                            <div id="kt_ecommerce_report_views_export" class="d-none"><div class="dt-buttons btn-group flex-wrap"><button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Copy</span></button> <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Excel</span></button> <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>CSV</span></button> <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>PDF</span></button> </div></div>
+                            <!--end::خروجی buttons-->
+                        </div>
+                        <!--begin::کارت title-->
+                        <!--begin::کارت toolbar-->
+                        <div class="card-toolbar">
+                            <!--begin::Toolbar-->
+                            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                                <!--begin::فیلتر-->
+                                <button type="button" class="btn btn-sm btn-light-primary me-3" data-bs-toggle="tooltip" title="فیلتر کردن داده ها از سرور">
+                                    <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
+                                    فیلتر داده ها
+                                </button>
+                                <!--begin::Menu 1-->
+                                <button type="button" id="kt_refresh_datatable" class="btn btn-sm btn-light-success me-3" data-bs-toggle="tooltip" title="بروزرسانی اطلاعات کالاها">
+                                    <!--begin::Indicator label-->
+                                    <span class="indicator-label">بروزرسانی اطلاعات</span>
+                                    <!--end::Indicator label-->
+                                    <!--begin::Indicator progress-->
+                                    <span class="indicator-progress">
+                                        در حال انجام ...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                    <!--end::Indicator progress-->
+                                </button>
+                                <!--end::Menu 1-->
+                                <!--end::فیلتر-->
+                                <!--begin::خروجی-->
+                                <button type="button" class="btn btn-sm btn-light-success me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="tooltip" title="دریافت خروجی از اطلاعات جدول">
+                                    <i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
+                                    دریافت خروجی
+                                </button>
+                                <div id="kt_datatable_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                            Export as PDF
+                                        </a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                            Export as Excel
+                                        </a>
+                                    </div>
+                                    <div id="kt_datatable_buttons" class="d-none"></div>
+                                </div>
+                                <!--end::خروجی-->
+                                <!--begin::Add customer-->
+                                <button type="button" class="btn btn-sm btn-primary" title="اضافه کردن" data-bs-toggle="modal" data-bs-target="#kt_modal_new_customer">
+                                    <i class="ki-duotone ki-plus fs-2"></i>
+                                    ثبت مشتری جدید
+                                </button>
+                                <!--end::Add customer-->
+                            </div>
+                            <!--end::Toolbar-->
+                        </div>
+                        <!--end::کارت toolbar-->
+                    </div>
+                    <!--end::Toolbar-->
+                    <!--begin::TABELS-->
+                    <table id="customerDatatable" class="table text-center table-rounded table-striped border table-row-bordered gy-5 gs-7">
+                        <thead>
+                            <tr class="fw-semibold fs-6">
+                                <th class="fw-semibold fw-bolder text-center fs-6">ردیف</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">نام</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">نام خانوادگی</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">موبایل</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">مشتری</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">پایه</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">کد اشتراک</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">متولّد</th>
+                                <th class="fw-semibold fw-bolder text-start fs-6">آدرس</th>
+                                <th class="fw-semibold fw-bolder text-center fs-6">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">@counterCustomer</td>
+                                    <td class="text-center">@item.FirstName</td>
+                                    <td class="text-center">@item.LastName</td>
+                                    <td class="text-center">@item.Mobile</td>
+                                    <td class="text-center">@item.TypeCustomer.TypeCustomerName</td>
+                                    <td class="text-center">@item.GradeStudent.GradeName</td>
+                                    <td class="text-center"><span class="badge badge-light-success text-center" style="margin-top: 0px;">@item.CodeCustomer</span></td>
+                                    <td class="text-center">@convertDate.ConvertMiladiToShamsi(item.BirthdayDate, "yyyy/MM/dd")</td>
+                                    <td class="text-start">@item.Address</td>
+                                    <td class="justify-content-start flex-shrink-0">
+                                        <!--begin::Icon-->
+                                        <div>
+                                            <!--begin::ویرایش-->
+                                            <a href="#" class="bg-hover-light-warning text-hover-warning btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3" data-bs-toggle="tooltip" title="ویرایش" onclick="showEditInfoCustomer(@item.CustomerID)">
+                                                <i class="ki-outline ki-pencil fs-3"></i>
+                                            </a>
+                                            <!--end::ویرایش-->
+                                            <!--begin::غیرفعال سازی-->
+                                            <a href="#" class="bg-hover-light-danger text-hover-danger btn btn-icon btn-color-muted btn-bg-light btn-active-color-danger btn-sm me-3" data-bs-toggle="tooltip" title="حذف کردن" onclick="showDeleteInfoCustomer(@item.CustomerID)">
+                                                <i class="ki-outline ki-trash fs-3"></i>
+                                            </a>
+                                            <!--begin::غیرفعال سازی-->
+                                        </div>
+                                        <!--end::Icon-->
+                                    </td>
+                                </tr>
+                                counterCustomer++;
+                            }
+                        </tbody>
+                    </table>
+                    <!--end::TABELS-->
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="text-muted mt-1 fw-semibold fs-7">لیست مشتری های موجود : <b class="badge badge-light-success fw-bolder" data-bs-toggle="tooltip" title="تعداد مشتری های ثبت شده"> @Model.Count() </b> می باشد. </span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--end::body-->
+            </div>
+            <!--end::engage widget 1-->
+        </div>
+        <!--end::col-->
+    </div>
+    <!--end::row-->
+</div>
+<!--end::content container-->
+<!--======================================================================================-->
+<!-- مودال مربوط به ثبت مشتری جدید -->
+<div class="modal fade" id="kt_modal_new_customer" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-1000px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-8 pt-0 pb-5">
+                <!--begin:Form-->
+                <form id="frmCreateNewCustomer">
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">ثبت مشتری جدید</h1>
+                        <!--end::Title-->
+                        <!--begin::توضیحات-->
+                        <div class="text-muted fw-semibold fs-5">
+                            جهت ثبت مشتری جدید، کلیه مشخصات را وارد کرده و بر روی دکمه <span class="fw-bold link-primary">
+                                ثبت اطلاعات
+                            </span> کلیک نمایید.
+                        </div>
+                        <!--end::توضیحات-->
+                    </div>
+                    <!--begin::Inputs-->
+                    <div class="d-flex flex-column nav-group nav-group-outline mx-auto mb-10 p-10">
+                        <div class="row mt-10">
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">نام</label>
+                                        <input type="text" id="FirstName" name="FirstName" class="form-control form-control-solid" autocomplete="off" placeholder="نام مشتری">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">نام خانوادگی</label>
+                                        <input type="text" id="LastName" name="LastName" class="form-control form-control-solid" autocomplete="off" placeholder="نام خانوادگی مشتری">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">موبایل</label>
+                                        <input type="text" id="Mobile" name="Mobile" class="form-control form-control-solid" autocomplete="off" placeholder="موبایل مشتری را وارد نمایید.">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">نوع مشتری</label>
+                                        <select id="TypeCustomerID" name="TypeCustomerID" class="form-select bg-light-success mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true" data-placeholder="انتخاب نوع مشتری">
+                                            <option value=""></option>
+                                        </select>
+                                        <!--begin::توضیحات-->
+                                        <div class="text-muted fs-7">نوع مشتری خود را انتخاب نمایید.</div>
+                                        <!--end::توضیحات-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">پایه تحصیلی</label>
+                                        <select id="GradeStudentID" name="GradeStudentID" class="form-select bg-light-success mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true" data-placeholder="انتخاب پایه تحصیلی">
+                                            <option value=""></option>
+                                        </select>
+                                        <!--begin::توضیحات-->
+                                        <div class="text-muted fs-7">پایه تحصیلی خود را انتخاب نمایید.</div>
+                                        <!--end::توضیحات-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="col-md-12 fv-row">
+                                    <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">تاریخ تولد</label>
+                                    <div class="position-relative d-flex align-items-center">
+                                        <i class="ki-outline ki-calendar-8 fs-2 position-absolute mx-4"></i>
+                                        <!--begin::تاریخ picker-->
+                                        <input type="text" id="BirthdayDate" name="BirthdayDate" class="form-control text-center persianDateTime form-control-solid MRG-top-zero-customer ps-12" autocomplete="off" placeholder="انتخاب تاریخ" />
+                                        <!--end::تاریخpicker-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="col-md-12 fv-row">
+                                    <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">کد اشتراک</label>
+                                    <input type="text" id="CodeCustomer" name="CodeCustomer" class="form-control form-control-solid" autocomplete="off" placeholder="کد اشتراک مشتری خود را وارد نمایید.">
+                                </div>
+                            </div>
+                            <div class="col-lg-8 mb-10 mb-lg-0">
+                                <!--begin::Tags-->
+                                <div class="me-5 col-lg-12 fv-row">
+                                    <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">آدرس</label>
+                                    <input type="text" id="Address" name="Address" class="form-control form-control-solid" autocomplete="off" placeholder="آدرس مشتری را وارد نمایید.">
+                                </div>
+                                <!--end::Tags-->
+                            </div>
+                        </div>
+                        <input id="UserID" name="UserID" value="@ViewBag.UserID" hidden />
+                    </div>
+                    <!--end::Inputs-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button id="btnAddCustomer" class="btn btn-sm btn-primary me-3"><i class="ki-duotone ki-plus fs-2"></i><span class="indicator-label">ثبت اطلاعات</span></button>
+                        <button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--======================================================================================-->
+<!-- مودال مربوط به ویرایش مشتری-->
+<div class="modal fade" id="kt_modal_edit_customer" tabindex="-1" aria-hidden="false">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-1000px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-8 pt-0 pb-5">
+                <!--begin:Form-->
+                <form id="frmEditCustomer">
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">ویرایش اطلاعات مشتری</h1>
+                        <!--end::Title-->
+                        <!--begin::توضیحات-->
+                        <div class="text-muted fw-semibold fs-5">
+                            جهت ویرایش اطلاعات مشتری، کلیه مشخصات را وارد کرده و بر روی دکمه <span class="fw-bold link-primary">
+                                ویرایش اطلاعات
+                            </span> کلیک نمایید.
+                        </div>
+                        <!--end::توضیحات-->
+                    </div>
+                    <!--begin::Inputs-->
+                    <div class="d-flex flex-column nav-group nav-group-outline mx-auto mb-10 p-10">
+                        <div class="row mt-10">
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">نام</label>
+                                        <input type="text" id="FirstNameE" name="FirstNameE" class="form-control form-control-solid" autocomplete="off" placeholder="نام مشتری">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">نام خانوادگی</label>
+                                        <input type="text" id="LastNameE" name="LastNameE" class="form-control form-control-solid" autocomplete="off" placeholder="نام خانوادگی مشتری">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">موبایل</label>
+                                        <input type="text" id="MobileE" name="MobileE" class="form-control form-control-solid" autocomplete="off" placeholder="موبایل مشتری را وارد نمایید.">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">نوع مشتری</label>
+                                        <select id="TypeCustomerIDE" name="TypeCustomerIDE" class="form-select bg-light-success mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true" data-placeholder="انتخاب نوع مشتری">
+                                            <option value=""></option>
+                                        </select>
+                                        <!--begin::توضیحات-->
+                                        <div class="text-muted fs-7">نوع مشتری خود را انتخاب نمایید.</div>
+                                        <!--end::توضیحات-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="row g-9 mb-5">
+                                    <div class="col-md-12 fv-row">
+                                        <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">پایه تحصیلی</label>
+                                        <select id="GradeStudentIDE" name="GradeStudentIDE" class="form-select bg-light-success mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true" data-placeholder="انتخاب پایه تحصیلی">
+                                            <option value=""></option>
+                                        </select>
+                                        <!--begin::توضیحات-->
+                                        <div class="text-muted fs-7">پایه تحصیلی خود را انتخاب نمایید.</div>
+                                        <!--end::توضیحات-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="col-md-12 fv-row">
+                                    <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">تاریخ تولد</label>
+                                    <div class="position-relative d-flex align-items-center">
+                                        <i class="ki-outline ki-calendar-8 fs-2 position-absolute mx-4"></i>
+                                        <!--begin::تاریخ picker-->
+                                        <input type="text" id="BirthdayDateE" name="BirthdayDateE" class="form-control text-center persianDateTime form-control-solid MRG-top-zero-customer ps-12" autocomplete="off" placeholder="انتخاب تاریخ" />
+                                        <!--end::تاریخpicker-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-10 mb-lg-0">
+                                <div class="col-md-12 fv-row">
+                                    <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">کد اشتراک</label>
+                                    <input type="text" id="CodeCustomerE" name="CodeCustomerE" class="form-control form-control-solid" autocomplete="off" placeholder="کد اشتراک مشتری خود را وارد نمایید.">
+                                </div>
+                            </div>
+                            <div class="col-lg-8 mb-10 mb-lg-0">
+                                <!--begin::Tags-->
+                                <div class="me-5 col-lg-12 fv-row">
+                                    <label class="required fs-6 fw-semibold fw-bold mb-2 text-dark">آدرس</label>
+                                    <input type="text" id="AddressE" name="AddressE" class="form-control form-control-solid" autocomplete="off" placeholder="آدرس مشتری را وارد نمایید.">
+                                </div>
+                                <!--end::Tags-->
+                            </div>
+                        </div>
+                        <input id="CustomerID" name="CustomerID" hidden />
+                    </div>
+                    <!--end::Inputs-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button id="btnEditCustomer" class="btn btn-sm btn-primary me-3"><i class="ki-outline ki-pencil fs-2"></i><span class="indicator-label">ویرایش اطلاعات</span></button>
+                        <button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--======================================================================================-->
+<!-- مودال مربوط به حذف مشتری-->
+<div class="modal fade" id="kt_modal_delete_customer" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-450px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form>
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">حذف اطلاعات مشتری</h1>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Tags-->
+                        <h1 class="text-center fw-normal fs-6 mb-3">آیا از حذف این مشتری مطمئن هستید؟</h1>
+                        <!--end::Tags-->
+                        <input type="hidden" id="countryid" />
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button id="btnDeleteCountry" class="btn btn-sm btn-danger me-3">
+                            <i class="ki-outline ki-trash fs-2"></i><span class="indicator-label"> حذف اطلاعات </span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!-- مودال مربوط به حذف مشتری-->
+@section AdminScripts{
+
+    <!-- فایل های جاوااسکریپت مربوط به تاریخ شمسی -->
+    <script src="/assets/plugins/persiandate/persian-date.js" asp-append-version="true"></script>
+    <script src="/assets/plugins/persiandate/persian-datepicker.js" asp-append-version="true"></script>
+
+    <!-- اسکریپت آژاکس مربوط به نمایش اطلاعات جهت ویرایش مشتری-->
+    <script>
+        function showEditInfoCustomer(customerid) {
+            GetListApiEdit();
+            var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
+            $.ajax({
+                type: 'GET',
+                url: serviceUrl,
+                headers: { 'Authorization': $("#token").html().trim() },
+                dataType: 'json',
+                success: function (xhr) {
+                    $("#CustomerID").val(xhr.data.customerID);
+                    $("#FirstNameE").val(xhr.data.firstName);
+                    $("#LastNameE").val(xhr.data.lastName);
+                    $("#MobileE").val(xhr.data.mobile);
+                    $("#TypeCustomerIDE").val(xhr.data.typeCustomerID);
+                    $("#GradeStudentIDE").val(xhr.data.gradeStudentID);
+                    $("#BirthdayDateE").val(new Date(xhr.data.birthdayDate).toLocaleDateString('fa-IR'));
+                    $("#CodeCustomerE").val(xhr.data.codeCustomer);
+                    $("#AddressE").val(xhr.data.address);
+
+                    // نمایش مودال مربوط به ویرایش اطلاعات سال مالی
+                    $("#kt_modal_edit_customer").modal('show');
+                }
+            });
+        }
+    </script>
+    <!--اسکریپت آژاکس مربوط به نمایش اطلاعات جهت ویرایش مشتری-->
+    <!--==================================================================-->
+    <!--اسکریپت آژاکس مربوط به نمایش اطلاعات جهت حذف کالا-->
+    <script>
+        function showDeleteInfoCustomer(customerid) {
+            var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
+            $.ajax({
+                type: "GET",
+                url: serviceUrl,
+                dataType: "json",
+                success: function (xhr) {
+                    $("#CustomerID").val(xhr.data.productID);
+                    $("#kt_modal_delete_customer").modal('show');
+                }
+            });
+        }
+    </script>
+    <!--اسکریپت آژاکس مربوط به نمایش اطلاعات جهت حذف مشتری-->
+    <!--==================================================================-->
+    <!-- اسکریپت آژاکس مربوط به ثبت مشتری -->
+    <script>
+        $("#btnAddCustomer").on('click', function (e) {
+            e.preventDefault();
+            var formDataAddCustomer = new FormData($("#frmCreateNewCustomer")[0]);
+
+            $.ajax({
+                url: '@ApiAddress' + "CustomerApi/CreateCustomerApi",
+                headers: { 'Authorization': $("#token").html().trim() },
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formDataAddCustomer,
+                dataType: 'json',
+                success: function (xml, textStatus, xhr) {
+                    // موجود هستند API پارامترهای استانداردی که از
+                    if (xhr.status == '200') {
+                        // نمایش فرم انیمیشن در زمان ثبت اطلاعات
+                        const loadingEl = document.createElement("div");
+                        document.body.prepend(loadingEl);
+                        loadingEl.classList.add("page-loader");
+                        loadingEl.classList.add("flex-column");
+                        loadingEl.classList.add("bg-dark");
+                        loadingEl.classList.add("bg-opacity-25");
+                        loadingEl.innerHTML = `
+                                        <span class="spinner-border text-primary" role="status"></span>
+                                        <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                        KTApp.showPageLoading();
+                        setTimeout(function () {
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                            window.location.reload();
+                        }, 3550);
+                        setTimeout(function () {
+                            toastr.options = {
+                                "debug": false,
+                                "closeButton": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toastr-top-center",
+                                "preventDuplicates": false,
+                                "showDuration": "600",
+                                "hideDuration": "1000",
+                                "timeOut": "1800",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("ثبت اطلاعات با موفقیت انجام شد.");
+                        }, 1300);
+                    }
+                    if (xhr.status == '550') {
+                        const loadingEl = document.createElement("div");
+                        document.body.prepend(loadingEl);
+                        loadingEl.classList.add("page-loader");
+                        loadingEl.classList.add("flex-column");
+                        loadingEl.classList.add("bg-dark");
+                        loadingEl.classList.add("bg-opacity-25");
+                        loadingEl.innerHTML = `
+                                <span class="spinner-border text-primary" role="status"></span>
+                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                        KTApp.showPageLoading();
+                        setTimeout(function () {
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                            window.location.reload();
+                        }, 3550);
+                        setTimeout(function () {
+                            toastr.options = {
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toastr-top-center",
+                                "preventDuplicates": false,
+                                "showDuration": "6000",
+                                "hideDuration": "1000",
+                                "timeOut": "1700",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.warning("کاربرگرامی: این مشتری قبلاٌ ثبت شده است.", "هشدار");
+                        }, 1300);
+                        return false;
+                    }
+                    else if (xhr.status == '500') {
+                        const loadingEl = document.createElement("div");
+                        document.body.prepend(loadingEl);
+                        loadingEl.classList.add("page-loader");
+                        loadingEl.classList.add("flex-column");
+                        loadingEl.classList.add("bg-dark");
+                        loadingEl.classList.add("bg-opacity-25");
+                        loadingEl.innerHTML = `
+                                <span class="spinner-border text-primary" role="status"></span>
+                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                        KTApp.showPageLoading();
+                        setTimeout(function () {
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                            window.location.reload();
+                        }, 3550);
+                        setTimeout(function () {
+                            toastr.options = {
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toastr-top-center",
+                                "preventDuplicates": false,
+                                "showDuration": "6000",
+                                "hideDuration": "1000",
+                                "timeOut": "1700",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.error("در ثبت اطلاعات مشکلی بوجود آمده است. لطفاً دقایقی دیگر تلاش نمایید.", "خطا");
+                        }, 1300);
+                        return false;
+                    }
+                    else if (xhr.status == '400') {
+                        const loadingEl = document.createElement("div");
+                        document.body.prepend(loadingEl);
+                        loadingEl.classList.add("page-loader");
+                        loadingEl.classList.add("flex-column");
+                        loadingEl.classList.add("bg-dark");
+                        loadingEl.classList.add("bg-opacity-25");
+                        loadingEl.innerHTML = `
+                                <span class="spinner-border text-primary" role="status"></span>
+                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                        KTApp.showPageLoading();
+                        setTimeout(function () {
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                            window.location.reload();
+                        }, 3550);
+                        setTimeout(function () {
+                            toastr.options = {
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toastr-top-center",
+                                "preventDuplicates": false,
+                                "showDuration": "6000",
+                                "hideDuration": "1000",
+                                "timeOut": "1700",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.info("کاربرگرامی: وارد کردن نام مشتری الزامی است.", "خطا");
+                        }, 1300);
+                        return false;
+                    }
+                },
+            })
+        });
+    </script>
+    <!-- اسکریپت آژاکس مربوط به ثبت مشتری -->
+    <!--===================================================================-->
+    <!-- اسکریپت آژاکس مربوط به ویرایش مشتری -->
+    <script>
+        $("#btnEditCustomer").on('click', function (e) {
+            e.preventDefault();
+            var formDataEditCustomer = new FormData($("#frmEditCustomer")[0]);
+
+            $.ajax({
+                type: 'PUT',
+                url: '@ApiAddress' + "CustomerApi/UpdateCustomerApi",
+                headers: { 'Authorization': $("#token").html().trim() },
+                processData: false,
+                contentType: false,
+                data: formDataEditCustomer,
+                dataType: 'json',
+                success: function (xml, textStatus, xhr) {
+                    if (xhr.status == '200') {
+                        // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
+                        const loadingEl = document.createElement("div");
+                        document.body.prepend(loadingEl);
+                        loadingEl.classList.add("page-loader");
+                        loadingEl.classList.add("flex-column");
+                        loadingEl.classList.add("bg-dark");
+                        loadingEl.classList.add("bg-opacity-25");
+                        loadingEl.innerHTML = `
+                                        <span class="spinner-border text-primary" role="status"></span>
+                                        <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                        KTApp.showPageLoading();
+                        setTimeout(function () {
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                            window.location.reload();
+                        }, 3600);
+                        setTimeout(function () {
+                            toastr.options = {
+                                "debug": false,
+                                "closeButton": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toastr-top-center",
+                                "preventDuplicates": false,
+                                "showDuration": "600",
+                                "hideDuration": "1000",
+                                "timeOut": "1600",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.info("ویرایش اطلاعات با موفقیت انجام شد.");
+                        }, 1300);
+                    }
+                },
+        });
+    </script>
+    <!-- اسکریپت آژاکس مربوط به ویرایش مشتری -->
+    <!--===================================================================-->
+    <!-- فراخوانی لیست اطلاعات مربوط به مشتریان -->
+    <script>
+        $("#kt_app_content_container").on('click', function () {
+            GetListApiCreate();
+        });
+    </script>
+    <!--===================================================================-->
+    <!-- Refresh Data in Tables -->
+    <script>
+        $('#kt_refresh_datatable').on('click', function () {
+            // نمایش فرم انیمیشن در زمان ثبت اطلاعات
+            const loadingEl = document.createElement("div");
+            document.body.prepend(loadingEl);
+            loadingEl.classList.add("page-loader");
+            loadingEl.classList.add("flex-column");
+            loadingEl.classList.add("bg-dark");
+            loadingEl.classList.add("bg-opacity-25");
+            loadingEl.innerHTML = `
+                            <span class="spinner-border text-primary" role="status"></span>
+                            <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+            KTApp.showPageLoading();
+            setTimeout(function () {
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+                window.location.reload();
+            }, 2200);
+            setTimeout(function () {
+                toastr.options = {
+                    "debug": false,
+                    "closeButton": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toastr-top-center",
+                    "preventDuplicates": false,
+                    "showDuration": "600",
+                    "hideDuration": "2200",
+                    "timeOut": "2200",
+                    "extendedTimeOut": "2200",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr.success("بروزرسانی انجام شد.");
+            }, 800);
+            //$('#frmEditProduct')[0].reset();
+            //document.getElementById("frmEditProduct").reset(); //or $('#form2')[0].reset();
+        })
+    </script>
+    <!--===================================================================-->
+    <!-- اسکریپت آژاکس مربوط به نمایش لیست های مورد نیاز-->
+    <script>
+        function GetListApiCreate() {
+            // لیست انواع مشتریان
+            $select = $("#TypeCustomerID");
+            $.ajax({
+                type: 'Get',
+                url: '@ApiAddress' + 'TypeCustomerApi/TypeCustomerListDropDownApi',
+                headers: { 'Authorization': $("#token").html().trim() },
+                dataType: 'Json',
+                success: function (xhr) {
+                    $select.empty();
+                    $select.html('<option></option>');
+                    $.each(xhr.data, function (i) {
+                        $select.append('<option value="' + xhr.data[i].drId + '">' + xhr.data[i].drName + '</option>');
+                    })
+                },
+                error: function () {
+                    $select.html('<option value="-2" >--- اطلاعات دریافت نشد ---</option>');
+                }
+            });
+            //==============================================================
+            // لیست پایه تحصیلی
+            $select2 = $("#GradeStudentID");
+            $.ajax({
+                type: 'Get',
+                url: '@ApiAddress' + 'GradeStudentsApi/GradeStudentListDropDownApi',
+                headers: { 'Authorization': $("#token").html().trim() },
+                dataType: 'Json',
+                success: function (xhr) {
+                    $select2.empty();
+                    $select2.html('<option></option>');
+                    $.each(xhr.data, function (i) {
+                        $select2.append('<option value="' + xhr.data[i].drId + '">' + xhr.data[i].drName + '</option>');
+                    })
+                },
+                error: function () {
+                    $select2.html('<option value="-2" >--- اطلاعات دریافت نشد ---</option>');
+                }
+            });
+            //==============================================================
+        }
+    </script>
+    <!-- اسکریپت آژاکس مربوط به نمایش لیست های مورد نیاز-->
+    <!--==================================================================-->
+    <!-- اسکریپت آژاکس مربوط به نمایش لیست های مورد نیاز جهت ویرایش اطلاعات-->
+    <script>
+        function GetListApiEdit() {
+            // لیست انواع مشتریان
+            $selectE = $("#TypeCustomerIDE");
+            $.ajax({
+                type: 'Get',
+                url: '@ApiAddress' + 'TypeCustomerApi/TypeCustomerListDropDownApi',
+                headers: { 'Authorization': $("#token").html().trim() },
+                dataType: 'Json',
+                success: function (xhr) {
+                    $selectE.empty();
+                    $selectE.html('<option></option>');
+                    $.each(xhr.data, function (i) {
+                        $selectE.append('<option value="' + xhr.data[i].drId + '">' + xhr.data[i].drName + '</option>');
+                    })
+                },
+                error: function () {
+                    $selectE.html('<option value="-2" >--- اطلاعات دریافت نشد ---</option>');
+                }
+            });
+            //==============================================================
+            // لیست پایه تحصیلی
+            $select2E = $("#GradeStudentIDE");
+            $.ajax({
+                type: 'Get',
+                url: '@ApiAddress' + 'GradeStudentsApi/GradeStudentListDropDownApi',
+                headers: { 'Authorization': $("#token").html().trim() },
+                dataType: 'Json',
+                success: function (xhr) {
+                    $select2E.empty();
+                    $select2E.html('<option></option>');
+                    $.each(xhr.data, function (i) {
+                        $select2E.append('<option value="' + xhr.data[i].drId + '">' + xhr.data[i].drName + '</option>');
+                    })
+                },
+                error: function () {
+                    $select2E.html('<option value="-2" >--- اطلاعات دریافت نشد ---</option>');
+                }
+            });
+            //==============================================================
+        }
+    </script>
+    <!-- اسکریپت آژاکس مربوط به نمایش لیست های مورد نیاز جهت ویرایش اطلاعات-->
+    <!--==================================================================-->
+    <!--اسکریپت تمرکز بر روی ورودی مودال-->
+    <script>
+        $('#kt_modal_new_customer').on('shown.bs.modal', function () {
+            $('#FirstName').focus();
+        })
+    </script>
+    <!--اسکریپت تمرکز بر روی ورودی مودال-->
+    <!--==================================================================-->
+    <!--==================================================================-->
+    <script>
+        // For Show DateTime Persian
+        $(".persianDateTime").persianDatepicker({
+            format: 'YYYY/MM/DD'
+        });
+        $(".persianDateTime").val('');
+    </script>
+    <!--==================================================================-->
+    <!--اسکریپت جستجوی اطلاعات-->
+    <script>
+        var infoDataTable = $('#customerDatatable').DataTable({
+            ordering: false,
+            scrollCollapse: true,
+            // نمایش اطلاعات جستجو شده در زیر جدول
+            info: false,
+            //scrollX: true,
+            //scrollY: true,
+            //scrollY: 350,
+            // Change language : FA
+            "language": {
+                "url": "\\assets\\js\\datatables\\fa.json"
+            }
+        });
+        $('#customerSearch').keyup(function () {
+            infoDataTable.search($(this).val()).draw();
+        });
+        // مرتب سازی اطلاعات ردیف جدول
+        infoDataTable.on('order.dt search.dt', function () {
+            let i = 1;
+            // مرتب سازی از ستون 0 که اولین ستون جدول است انجام شود
+            infoDataTable.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        }).draw();
+    </script>
+    <!--==================================================================-->
+}

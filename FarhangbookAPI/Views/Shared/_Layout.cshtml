@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html direction="rtl" dir="rtl" style="direction: rtl">
+<head>
+	<base href="" />
+	<title>ورود به باشگاه مشتریان کتابفروشی فرهنگ | خوش آمدید</title>
+	<meta charset="utf-8" />
+	<meta name="description" content="باشگاه مشتریان کتابفروشی فرهنگ" />
+	<meta name="keywords" content="باشگاه مشتریان کتابفروشی فرهنگ" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta property="og:locale" content="ir_FA" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="باشگاه مشتریان کتابفروشی فرهنگ" />
+	<meta property="og:url" content="http://www.farhangbooks.ir" />
+	<meta property="og:site_name" content="باشگاه مشتریان کتابفروشی فرهنگ" />
+	<link rel="canonical" href="http://www.farhangbooks.ir" />
+	<link rel="shortcut icon" href="/assets/media/logos/favicon.png" />
+	<link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+	<link href="/assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+	<link href="/assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+	<link href="/assets/plugins/custom/datatables/datatables.bundle.rtl.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body id="kt_app_body" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+	<script>var defaultThemeMode = "light"; var themeMode; if (document.documentElement) { if (document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if (localStorage.getآیتم("data-bs-theme") !== null) { themeMode = localStorage.getآیتم("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
+	@RenderBody()
+	<script>var hostUrl = "/assets/";</script>
+	<script src="/assets/plugins/global/plugins.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/js/scripts.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/datatables/datatables.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/js/widgets.bundle.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/widgets.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/apps/chat/chat.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/utilities/modals/upgrade-plan.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/utilities/modals/create-campaign.js" asp-append-version="true"></script>
+	<script src="/assets/js/custom/utilities/modals/users-search.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/datatables/buttons/export.js" asp-append-version="true"></script>
+	<script src="/assets/plugins/custom/prismjs/prismjs.bundle.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", false)
+	@await RenderSectionAsync("LoginScripts", false)
+</body>
+</html>
