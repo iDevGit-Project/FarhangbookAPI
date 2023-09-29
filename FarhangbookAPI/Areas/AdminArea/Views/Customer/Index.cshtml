@@ -470,12 +470,12 @@
                         <!--begin::Tags-->
                         <h1 class="text-center fw-normal fs-6 mb-3">آیا از حذف این مشتری مطمئن هستید؟</h1>
                         <!--end::Tags-->
-                        <input type="hidden" id="countryid" />
+                        <input id="customerID" type="hidden" />
                     </div>
                     <!--end::Input group-->
                     <!--begin::Actions-->
                     <div class="text-center">
-                        <button id="btnDeleteCountry" class="btn btn-sm btn-danger me-3">
+                        <button id="btnDeleteCustomer" class="btn btn-sm btn-danger me-3">
                             <i class="ki-outline ki-trash fs-2"></i><span class="indicator-label"> حذف اطلاعات </span>
                         </button>
                         <button type="button" class="btn btn-sm btn-light-dark me-3" data-bs-dismiss="modal">انصراف</button>
@@ -518,7 +518,7 @@
                     $("#CodeCustomerE").val(xhr.data.codeCustomer);
                     $("#AddressE").val(xhr.data.address);
 
-                    // نمایش مودال مربوط به ویرایش اطلاعات سال مالی
+                    // نمایش مودال مربوط به ویرایش اطلاعات مشتری
                     $("#kt_modal_edit_customer").modal('show');
                 }
             });
@@ -526,7 +526,7 @@
     </script>
     <!--اسکریپت آژاکس مربوط به نمایش اطلاعات جهت ویرایش مشتری-->
     <!--==================================================================-->
-    <!--اسکریپت آژاکس مربوط به نمایش اطلاعات جهت حذف کالا-->
+    <!--اسکریپت آژاکس مربوط به نمایش اطلاعات جهت حذف مشتری-->
     <script>
         function showDeleteInfoCustomer(customerid) {
             var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
@@ -535,7 +535,7 @@
                 url: serviceUrl,
                 dataType: "json",
                 success: function (xhr) {
-                    $("#CustomerID").val(xhr.data.productID);
+                    $("#CustomerID").val(xhr.data.customerID);
                     $("#kt_modal_delete_customer").modal('show');
                 }
             });
@@ -734,8 +734,8 @@
                         loadingEl.classList.add("bg-dark");
                         loadingEl.classList.add("bg-opacity-25");
                         loadingEl.innerHTML = `
-                                        <span class="spinner-border text-primary" role="status"></span>
-                                        <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                        <span class="spinner-border text-primary" role="status"></span>
+                        <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
                         KTApp.showPageLoading();
                         setTimeout(function () {
                             KTApp.hidePageLoading();
@@ -763,10 +763,68 @@
                         }, 1300);
                     }
                 },
+            })
         });
     </script>
     <!-- اسکریپت آژاکس مربوط به ویرایش مشتری -->
     <!--===================================================================-->
+    <!-- اسکریپت آژاکس مربوط به حذف نوع مشتری-->
+    <script>
+        $("#btnDeleteCustomer").on('click', function (e) {
+            e.preventDefault();
+            const model = {
+                customerID: $("#customerID").val().trim()
+            };
+            $.ajax({
+                type: 'Delete',
+                url: '@ApiAddress' + "CustomerApi/DeleteCustomerApi",
+                data: JSON.stringify(model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (xml, textStatus, xhr) {
+                    if (xhr.status == '200') {
+                        // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
+                        const loadingEl = document.createElement("div");
+                        document.body.prepend(loadingEl);
+                        loadingEl.classList.add("page-loader");
+                        loadingEl.classList.add("flex-column");
+                        loadingEl.classList.add("bg-dark");
+                        loadingEl.classList.add("bg-opacity-25");
+                        loadingEl.innerHTML = `
+                                <span class="spinner-border text-primary" role="status"></span>
+                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>
+                                                `;
+                        KTApp.showPageLoading();
+                        setTimeout(function () {
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                            window.location.reload();
+                        }, 3600);
+                        setTimeout(function () {
+                            toastr.options = {
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toastr-top-center",
+                                "preventDuplicates": false,
+                                "showDuration": "600",
+                                "hideDuration": "1000",
+                                "timeOut": "1600",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.error("حذف اطلاعات با موفقیت انجام شد.");
+                        }, 1300);
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- اسکریپت آژاکس مربوط به ویرایش نوع مشتری-->
+    <!--==================================================================-->
     <!-- فراخوانی لیست اطلاعات مربوط به مشتریان -->
     <script>
         $("#kt_app_content_container").on('click', function () {
@@ -785,8 +843,8 @@
             loadingEl.classList.add("bg-dark");
             loadingEl.classList.add("bg-opacity-25");
             loadingEl.innerHTML = `
-                            <span class="spinner-border text-primary" role="status"></span>
-                            <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+            <span class="spinner-border text-primary" role="status"></span>
+            <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
             KTApp.showPageLoading();
             setTimeout(function () {
                 KTApp.hidePageLoading();
@@ -915,7 +973,6 @@
     </script>
     <!--اسکریپت تمرکز بر روی ورودی مودال-->
     <!--==================================================================-->
-    <!--==================================================================-->
     <script>
         // For Show DateTime Persian
         $(".persianDateTime").persianDatepicker({
@@ -930,7 +987,7 @@
             ordering: false,
             scrollCollapse: true,
             // نمایش اطلاعات جستجو شده در زیر جدول
-            info: false,
+            info: true,
             //scrollX: true,
             //scrollY: true,
             //scrollY: 350,

@@ -20,17 +20,19 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
 		}
 		public async Task<IActionResult> Index()
 		{
-			// مربوط به سرور به صورت لوکال نوشته شده که بعد از پابلیش پروژه می بایست آن را فقط یکبار در این فایل تغییر داد URL جهت تغییر داینامیک آدرس  appsettings در فایل 
-			string apiUrl = _config["ApiAddress"] + "TypeCustomerApi/GetTypeCustomers";
-			GetListApi GA = new GetListApi();
-			string jsonfullmodel = await GA.GetApiList(apiUrl, User.FindFirstValue("Token"));
-			dynamic jsondataPars = JObject.Parse(jsonfullmodel);
-			var model = JsonConvert.DeserializeObject<List<TypeCustomerDto>>(jsondataPars.data.ToString());
+            // مربوط به سرور به صورت لوکال نوشته شده که بعد از پابلیش پروژه می بایست آن را فقط یکبار در این فایل تغییر داد URL جهت تغییر داینامیک آدرس  appsettings در فایل 
+            string apiUrl = _config["ApiAddress"] + "TypeCustomerApi/GetTypeCustomers";
+            GetListApi GA = new GetListApi();
 
-			ViewBag.ApiAddress = _config["ApiAddress"];
-			ViewBag.UserID = _config["UserID"];
-			ViewBag.Token = User.FindFirstValue("JwtTokenValidator");
-			return View(model);
-		}
+            // ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
+            string jsonfullmodel = await GA.GetApiList(apiUrl, _config["JwtTokenValidator"]);
+            dynamic jsondataPars = JObject.Parse(jsonfullmodel);
+            var model = JsonConvert.DeserializeObject<List<TypeCustomerDto>>(jsondataPars.data.ToString());
+
+            ViewBag.ApiAddress = _config["ApiAddress"];
+            ViewBag.UserID = _config["UserID"];
+            ViewBag.Token = _config["JwtTokenValidator"];
+            return View(model);
+        }
 	}
 }
