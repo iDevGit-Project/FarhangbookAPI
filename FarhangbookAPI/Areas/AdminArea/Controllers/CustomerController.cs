@@ -33,6 +33,22 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
             ViewBag.UserID = _config["UserID"];
             ViewBag.Token = _config["JwtTokenValidator"];
             return View(model);
+
+            //// مربوط به سرور به صورت لوکال نوشته شده که بعد از پابلیش پروژه می بایست آن را فقط یکبار در این فایل تغییر داد URL جهت تغییر داینامیک آدرس  appsettings در فایل 
+            //string apiUrl = _config["ApiAddress"] + "CustomerApi/GetCustomers";
+
+            //GetListApi GA = new GetListApi();
+
+            //// ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
+            //string jsonfullmodel = await GA.GetApiList(apiUrl, User.FindFirstValue("Token"));
+
+            //dynamic jsondataPars = JObject.Parse(jsonfullmodel);
+            //var model = JsonConvert.DeserializeObject<List<CustomerDto>>(jsondataPars.data.ToString());
+
+            //ViewBag.ApiAddress = _config["ApiAddress"];
+            //ViewBag.UserID = _config["UserID"];
+            //ViewBag.Token = User.FindFirstValue("JwtTokenValidator");
+            //return View(model);
         }
-	}
+    }
 }

@@ -162,6 +162,7 @@
                             }
                         </tbody>
                     </table>
+                    <div id="kt_datatable_example_buttons" class="d-none"></div>
                     <!--end::TABELS-->
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12 text-center">
@@ -773,7 +774,7 @@
         $("#btnDeleteCustomer").on('click', function (e) {
             e.preventDefault();
             const model = {
-                customerID: $("#customerID").val().trim()
+                customerID: $("#CustomerID").val()
             };
             $.ajax({
                 type: 'Delete',
@@ -986,8 +987,9 @@
         var infoDataTable = $('#customerDatatable').DataTable({
             ordering: false,
             scrollCollapse: true,
+            printable: false,
             // نمایش اطلاعات جستجو شده در زیر جدول
-            info: true,
+            info: false,
             //scrollX: true,
             //scrollY: true,
             //scrollY: 350,

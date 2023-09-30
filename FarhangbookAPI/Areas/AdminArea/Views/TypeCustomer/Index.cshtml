@@ -40,10 +40,19 @@
 						<div class="card-title">
 							<!--begin::جستجو-->
 							<div class="d-flex align-items-center position-relative my-1">
-								<i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
-								<input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="جستجوی اطلاعات">
+								<i class="ki-outline ki-magnifier fs-2 position-absolute ms-4"></i>
+								<input type="text" id="typeCustomerSearch" class="form-control form-control-solid w-250px ps-12" autocomplete="off" placeholder="جستجو اطلاعات">
+								<div id="autoCompleteDiv"></div>
+								<!--begin::Spinner-->
+								<span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-1" data-kt-filter="spinner">
+									<span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
+								</span>
+								<!--end::Spinner-->
 							</div>
 							<!--end::جستجو-->
+							<!--begin::خروجی buttons-->
+							<div id="kt_ecommerce_report_views_export" class="d-none"><div class="dt-buttons btn-group flex-wrap"><button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Copy</span></button> <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Excel</span></button> <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>CSV</span></button> <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>PDF</span></button> </div></div>
+							<!--end::خروجی buttons-->
 						</div>
 						<!--begin::کارت title-->
 						<!--begin::کارت toolbar-->
@@ -90,21 +99,21 @@
 					</div>
 					<!--end::Toolbar-->
 					<!--begin::TABELS-->
-					<table id="datatable_warehouse" class="table text-center table-rounded table-striped border table-row-bordered gy-5 gs-7">
+					<table id="TypeCustomerDatatable" class="table text-center table-rounded table-striped border table-row-bordered gy-5 gs-7">
 						<thead>
 							<tr class="fw-semibold fs-6">
-								<th class="fw-semibold fw-bolder fs-6">ردیف</th>
-								<th class="fw-semibold fw-bolder fs-6">نوع مشتری</th>
-								<th class="fw-semibold fw-bolder fs-6">عملیات داده ها</th>
+								<th class="fw-semibold fw-bolder text-start fs-6">ردیف</th>
+								<th class="fw-semibold fw-bolder text-start fs-6">نوع مشتری</th>
+								<th class="fw-semibold fw-bolder text-end fs-6">عملیات داده ها</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach (var item in Model)
 							{
 								<tr>
-									<td>@counterTypeCustomer</td>
-									<td>@item.TypeCustomerName</td>
-									<td class="justify-content-start flex-shrink-0">
+									<td class="text-start">@counterTypeCustomer</td>
+									<td class="text-start">@item.TypeCustomerName</td>
+									<td class="justify-content-start text-end flex-shrink-0">
 										<!--begin::Icon-->
 										<div>
 											<!--begin::ویرایش-->
@@ -653,11 +662,32 @@
 	</script>
 	<!--اسکریپت تمرکز بر روی ویرایش ورودی مودال-->
 	<!--==================================================================-->
+	<!--اسکریپت جستجوی اطلاعات-->
 	<script>
-		// For Export DataTable
+		var infoDataTable = $('#TypeCustomerDatatable').DataTable({
+			ordering: false,
+			scrollCollapse: true,
+			// نمایش اطلاعات جستجو شده در زیر جدول
+			info: false,
+			//scrollX: true,
+			//scrollY: true,
+			//scrollY: 350,
+			// Change language : FA
+			"language": {
+				"url": "\\assets\\js\\datatables\\fa.json"
+			}
+		});
+		$('#typeCustomerSearch').keyup(function () {
+			infoDataTable.search($(this).val()).draw();
+		});
+		// مرتب سازی اطلاعات ردیف جدول
+		infoDataTable.on('order.dt search.dt', function () {
+			let i = 1;
+			// مرتب سازی از ستون 0 که اولین ستون جدول است انجام شود
+			infoDataTable.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+				this.data(i++);
+			});
+		}).draw();
 	</script>
-
-	<script>
-		// For Search DataTable
-	</script>
+	<!--==================================================================-->
 }
