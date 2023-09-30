@@ -55,7 +55,7 @@
                             </div>
                             <!--end::جستجو-->
                             <!--begin::خروجی buttons-->
-                            <div id="kt_ecommerce_report_views_export" class="d-none"><div class="dt-buttons btn-group flex-wrap"><button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Copy</span></button> <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Excel</span></button> <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>CSV</span></button> <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>PDF</span></button> </div></div>
+                            <div id="kt_ecommerce_report_customer_export" class="d-none"><div class="dt-buttons btn-group flex-wrap"><button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Copy</span></button> <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>Excel</span></button> <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>CSV</span></button> <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="kt_ecommerce_report_views_table" type="button"><span>PDF</span></button> </div></div>
                             <!--end::خروجی buttons-->
                         </div>
                         <!--begin::کارت title-->
@@ -86,15 +86,15 @@
                                     <i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
                                     دریافت خروجی
                                 </button>
-                                <div id="kt_datatable_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                                <div id="kt_report_customer_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3" data-kt-export="pdf">
-                                            Export as PDF
+                                        <a href="#" class="menu-link px-3" data-kt-customer-export="pdf">
+                                            خروجی سند PDF
                                         </a>
                                     </div>
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3" data-kt-export="excel">
-                                            Export as Excel
+                                        <a href="#" class="menu-link px-3" data-kt-customer-export="excel">
+                                            خروجی فایل Excel
                                         </a>
                                     </div>
                                     <div id="kt_datatable_buttons" class="d-none"></div>
@@ -497,6 +497,8 @@
     <!-- فایل های جاوااسکریپت مربوط به تاریخ شمسی -->
     <script src="/assets/plugins/persiandate/persian-date.js" asp-append-version="true"></script>
     <script src="/assets/plugins/persiandate/persian-datepicker.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js" asp-append-version="true"></script>
 
     <!-- اسکریپت آژاکس مربوط به نمایش اطلاعات جهت ویرایش مشتری-->
     <script>
@@ -1009,6 +1011,86 @@
                 this.data(i++);
             });
         }).draw();
+        // Hook export buttons
+        var exportButtons = () => {
+            const documentTitle = 'اطلاعات لیست مشتریان در سامانه';
+            var buttons = new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        title: documentTitle
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: documentTitle
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: documentTitle
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: documentTitle
+                    }
+                ]
+            }).container().appendTo($('#kt_ecommerce_report_customer_export'));
+
+            // Hook dropdown menu click event to datatable export buttons
+            const exportButtons = document.querySelectorAll('#kt_report_customer_export_menu [data-kt-customer-export]');
+            exportButtons.forEach(exportButton => {
+                exportButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    // Get clicked export value
+                    const exportValue = e.target.getAttribute('data-kt-customer-export');
+                    const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
+
+                    // Trigger click event on hidden datatable export buttons
+                    target.click();
+                });
+            });
+        }
     </script>
     <!--==================================================================-->
+    <script>
+        // Hook export buttons
+        var exportButtons = () => {
+            const documentTitle = 'اطلاعات لیست مشتریان در سامانه';
+            var buttons = new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        title: documentTitle
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: documentTitle
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: documentTitle
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: documentTitle
+                    }
+                ]
+            }).container().appendTo($('#kt_ecommerce_report_customer_export'));
+
+            // Hook dropdown menu click event to datatable export buttons
+            const exportButtons = document.querySelectorAll('#kt_report_customer_export_menu [data-kt-customer-export]');
+            exportButtons.forEach(exportButton => {
+                exportButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    // Get clicked export value
+                    const exportValue = e.target.getAttribute('data-kt-customer-export');
+                    const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
+
+                    // Trigger click event on hidden datatable export buttons
+                    target.click();
+                });
+            });
+        }
+    </script>
 }
