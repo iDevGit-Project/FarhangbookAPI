@@ -6,8 +6,8 @@ var KTDatatablesExample = function () {
 			buttons: [
 				{
 					extend: 'pdfHtml5',
-				}
-						{
+				},
+				{
 					extend: 'excelHtml5',
 				},
 			]
@@ -32,7 +32,7 @@ var KTDatatablesExample = function () {
 	// Public methods
 	return {
 		init: function () {
-			table = document.querySelector('#country_datatable');
+			table = document.querySelector('#customerDatatable');
 
 			if (!table) {
 				return;
