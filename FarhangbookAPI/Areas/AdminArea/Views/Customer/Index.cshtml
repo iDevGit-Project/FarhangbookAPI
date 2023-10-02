@@ -292,6 +292,7 @@
                                 <!--end::Tags-->
                             </div>
                         </div>
+                        <span id="spnvalidate" name="spnvalidate" class="badge badge-light-danger text-center" style="margin-top:0"></span>
                         <input id="UserID" name="UserID" value="@ViewBag.UserID" hidden />
                     </div>
                     <!--end::Inputs-->
@@ -672,6 +673,7 @@
                         return false;
                     }
                     else if (xhr.status == '400') {
+                        $("#spnvalidate").text("نام مشتری وارد نشده است.");
                         const loadingEl = document.createElement("div");
                         document.body.prepend(loadingEl);
                         loadingEl.classList.add("page-loader");
@@ -987,14 +989,17 @@
     <!--اسکریپت جستجوی اطلاعات-->
     <script>
         var infoDataTable = $('#customerDatatable').DataTable({
-            ordering: false,
-            scrollCollapse: true,
-            printable: false,
+            autoFill: true
             // نمایش اطلاعات جستجو شده در زیر جدول
             info: false,
-            //scrollX: true,
+            ordering: false,
+            fixedHeader: true,
+            scrollCollapse: true,
+            buttons: [
+                'pdf'
+            ]
             //scrollY: true,
-            //scrollY: 350,
+            //scrollX: true,
             // Change language : FA
             "language": {
                 "url": "\\assets\\js\\datatables\\fa.json"
@@ -1011,86 +1016,9 @@
                 this.data(i++);
             });
         }).draw();
-        // Hook export buttons
-        var exportButtons = () => {
-            const documentTitle = 'اطلاعات لیست مشتریان در سامانه';
-            var buttons = new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                    {
-                        extend: 'copyHtml5',
-                        title: documentTitle
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        title: documentTitle
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        title: documentTitle
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        title: documentTitle
-                    }
-                ]
-            }).container().appendTo($('#kt_ecommerce_report_customer_export'));
-
-            // Hook dropdown menu click event to datatable export buttons
-            const exportButtons = document.querySelectorAll('#kt_report_customer_export_menu [data-kt-customer-export]');
-            exportButtons.forEach(exportButton => {
-                exportButton.addEventListener('click', e => {
-                    e.preventDefault();
-
-                    // Get clicked export value
-                    const exportValue = e.target.getAttribute('data-kt-customer-export');
-                    const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
-
-                    // Trigger click event on hidden datatable export buttons
-                    target.click();
-                });
-            });
-        }
     </script>
     <!--==================================================================-->
     <script>
         // Hook export buttons
-        var exportButtons = () => {
-            const documentTitle = 'اطلاعات لیست مشتریان در سامانه';
-            var buttons = new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                    {
-                        extend: 'copyHtml5',
-                        title: documentTitle
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        title: documentTitle
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        title: documentTitle
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        title: documentTitle
-                    }
-                ]
-            }).container().appendTo($('#kt_ecommerce_report_customer_export'));
-
-            // Hook dropdown menu click event to datatable export buttons
-            const exportButtons = document.querySelectorAll('#kt_report_customer_export_menu [data-kt-customer-export]');
-            exportButtons.forEach(exportButton => {
-                exportButton.addEventListener('click', e => {
-                    e.preventDefault();
-
-                    // Get clicked export value
-                    const exportValue = e.target.getAttribute('data-kt-customer-export');
-                    const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
-
-                    // Trigger click event on hidden datatable export buttons
-                    target.click();
-                });
-            });
-        }
     </script>
 }
