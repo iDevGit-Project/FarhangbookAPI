@@ -989,17 +989,13 @@
     <!--اسکریپت جستجوی اطلاعات-->
     <script>
         var infoDataTable = $('#customerDatatable').DataTable({
-            autoFill: true
+            ordering: false,
+            scrollCollapse: true,
             // نمایش اطلاعات جستجو شده در زیر جدول
             info: false,
-            ordering: false,
-            fixedHeader: true,
-            scrollCollapse: true,
-            buttons: [
-                'pdf'
-            ]
-            //scrollY: true,
             //scrollX: true,
+            //scrollY: true,
+            //scrollY: 350,
             // Change language : FA
             "language": {
                 "url": "\\assets\\js\\datatables\\fa.json"
