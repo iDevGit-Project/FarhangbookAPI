@@ -332,9 +332,11 @@
 	<script>
 		function showTypeCustomerName(typeCustomerid) {
 			var serviceUrl = '@ApiAddress' + "TypeCustomerApi/GetById?typeCustomerid=" + typeCustomerid;
+
 			$.ajax({
-				type: "Get",
+				type: "GET",
 				url: serviceUrl,
+				headers: { 'Authorization': $("#token").html().trim() },
 				dataType: "json",
 				success: function (xhr) {
 					$("#TypeCustomerNameEdit").val(xhr.data.typeCustomerName);
@@ -350,8 +352,9 @@
 	<script>
 		function showTypeCustomerDeleteName(typeCustomerid) {
 			var serviceUrl = '@ApiAddress' + "TypeCustomerApi/GetById?typeCustomerid=" + typeCustomerid;
+
 			$.ajax({
-				type: "Get",
+				type: "GET",
 				url: serviceUrl,
 				dataType: "json",
 				success: function (xhr) {
@@ -532,19 +535,19 @@
 	<script>
 		$("#btnEditTypeCustomerName").on('click', function (e) {
 			e.preventDefault();
+
 			const model = {
 				typecustomerName: $("#TypeCustomerNameEdit").val().trim(),
 				typecustomerID: $("#typeCustomerid").val().trim()
 			};
-			$.ajax({
-				type: 'Put',
-				url: '@ApiAddress' + "TypeCustomerApi/UpdateTypeCustomerApi",
 
-				// دریافت توکن معتبر از کاربر وارد شده به سیستم جهت انجام عملیات
+			$.ajax({
+				type: 'PUT',
+				url: '@ApiAddress' + "TypeCustomerApi/UpdateTypeCustomerApi",
 				headers: { 'Authorization': $("#token").html().trim() },
 				data: JSON.stringify(model),
-				contentType: "application/json; charset=utf-8",
 				dataType: "json",
+				contentType: "application/json; charset=utf-8",
 				success: function (xml, textStatus, xhr) {
 					if (xhr.status == '200') {
 						// نمایش فرم انیمیشن در زمان ویرایش اطلاعات

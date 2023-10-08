@@ -510,11 +510,13 @@
     <script>
         function showEditInfoCustomer(customerid) {
             GetListApiEdit();
+            var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
+
             $.ajax({
-                type: 'GET',
-                url: '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid,
+                type: "GET",
+                url: serviceUrl,
                 headers: { 'Authorization': $("#token").html().trim() },
-                dataType: 'json',
+                dataType: "json",
                 success: function (xhr) {
                     $("#CustomerID").val(xhr.data.customerID);
                     $("#FirstNameE").val(xhr.data.firstName);
@@ -538,6 +540,7 @@
     <script>
         function showDeleteInfoCustomer(customerid) {
             var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
+
             $.ajax({
                 type: "GET",
                 url: serviceUrl,
@@ -656,11 +659,10 @@
                 type: 'PUT',
                 url: '@ApiAddress' + "CustomerApi/UpdateCustomerApi",
                 headers: { 'Authorization': $("#token").html().trim() },
-                dataType: false,
-                processData: false,
-                contentType: "application/json; charset=utf-8",
                 data: formDataEditCustomer,
-                dataType: 'json',
+                dataType: "json",
+                contentType: false,
+                processData: false,
                 success: function (xml, textStatus, xhr) {
                     if (xhr.status == '200') {
                         // نمایش فرم انیمیشن در زمان ویرایش اطلاعات

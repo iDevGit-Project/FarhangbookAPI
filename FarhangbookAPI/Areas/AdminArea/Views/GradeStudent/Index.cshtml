@@ -332,9 +332,11 @@
 	<script>
 		function showGradeStudentName(gradeStudentid) {
 			var serviceUrl = '@ApiAddress' + "GradeStudentsApi/GetById?gradeStudentid=" + gradeStudentid;
+
 			$.ajax({
-				type: "Get",
+				type: "GET",
 				url: serviceUrl,
+				headers: { 'Authorization': $("#token").html().trim() },
 				dataType: "json",
 				success: function (xhr) {
 					$("#GradeNameEdit").val(xhr.data.gradeName);
@@ -350,8 +352,9 @@
 	<script>
 		function showGradeStudentDeleteName(gradeStudentid) {
 			var serviceUrl = '@ApiAddress' + "GradeStudentsApi/GetById?gradeStudentid=" + gradeStudentid;
+
 			$.ajax({
-				type: "Get",
+				type: "GET",
 				url: serviceUrl,
 				dataType: "json",
 				success: function (xhr) {
@@ -531,19 +534,19 @@
 	<script>
 		$("#btnEditGradeStudent").on('click', function (e) {
 			e.preventDefault();
+
 			const model = {
 				gradeName: $("#GradeNameEdit").val().trim(),
 				gradeStudentID: $("#gradeStudentid").val().trim()
 			};
-			$.ajax({
-				type: 'Put',
-				url: '@ApiAddress' + "GradeStudentsApi/UpdateGradeStudentApi",
 
-				// دریافت توکن معتبر از کاربر وارد شده به سیستم جهت انجام عملیات
+			$.ajax({
+				type: 'PUT',
+				url: '@ApiAddress' + "GradeStudentsApi/UpdateGradeStudentApi",
 				headers: { 'Authorization': $("#token").html().trim() },
 				data: JSON.stringify(model),
-				contentType: "application/json; charset=utf-8",
 				dataType: "json",
+				contentType: "application/json; charset=utf-8",
 				success: function (xml, textStatus, xhr) {
 					if (xhr.status == '200') {
 						// نمایش فرم انیمیشن در زمان ویرایش اطلاعات
