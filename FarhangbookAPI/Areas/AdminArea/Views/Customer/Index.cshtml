@@ -421,6 +421,9 @@
                                 </div>
                                 <!--end::Tags-->
                             </div>
+                            <div class="col-md-12 alert" style="color:red;">
+                                <span class="text-danger" id="spnvalidateedit"></span>
+                            </div>
                         </div>
                         <input id="CustomerID" name="CustomerID" hidden />
                     </div>
@@ -507,7 +510,7 @@
             GetListApiEdit();
             var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
             $.ajax({
-                type: 'GET',
+                type: 'Get',
                 url: serviceUrl,
                 headers: { 'Authorization': $("#token").html().trim() },
                 dataType: 'json',
@@ -725,12 +728,13 @@
                 type: 'PUT',
                 url: '@ApiAddress' + "CustomerApi/UpdateCustomerApi",
                 headers: { 'Authorization': $("#token").html().trim() },
+                dataType: false,
                 processData: false,
-                contentType: false,
+                //contentType: false,
                 data: formDataEditCustomer,
                 dataType: 'json',
                 success: function (xml, textStatus, xhr) {
-                    if (xhr.status == '200') {
+                    if (xhr.statusCode == '200') {
                         // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
                         const loadingEl = document.createElement("div");
                         document.body.prepend(loadingEl);
@@ -767,7 +771,12 @@
                             toastr.info("ویرایش اطلاعات با موفقیت انجام شد.");
                         }, 1300);
                     }
+                    else if (xhr.statusCode == '400') {
+                        $("#spnvalidateedit").text("اطلاعات ناقص وارد شده است.");
+                        return false;
+                    }
                 },
+
             })
         });
     </script>
