@@ -292,7 +292,9 @@
                                 <!--end::Tags-->
                             </div>
                         </div>
-                        <span id="spnvalidate" name="spnvalidate" class="badge badge-light-danger text-center" style="margin-top:0"></span>
+                        <div class="col-md-12 alert text-center" style="color:red;margin-top:0">
+                            <span class="text-danger" id="spnvalidate"></span>
+                        </div>
                         <input id="UserID" name="UserID" value="@ViewBag.UserID" hidden />
                     </div>
                     <!--end::Inputs-->
@@ -508,10 +510,9 @@
     <script>
         function showEditInfoCustomer(customerid) {
             GetListApiEdit();
-            var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
             $.ajax({
-                type: 'Get',
-                url: serviceUrl,
+                type: 'GET',
+                url: '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid,
                 headers: { 'Authorization': $("#token").html().trim() },
                 dataType: 'json',
                 success: function (xhr) {
@@ -559,7 +560,7 @@
             $.ajax({
                 url: '@ApiAddress' + "CustomerApi/CreateCustomerApi",
                 headers: { 'Authorization': $("#token").html().trim() },
-                type: 'POST',
+                type: 'Post',
                 processData: false,
                 contentType: false,
                 data: formDataAddCustomer,
@@ -603,80 +604,7 @@
                             toastr.success("ثبت اطلاعات با موفقیت انجام شد.");
                         }, 1300);
                     }
-                    if (xhr.status == '550') {
-                        const loadingEl = document.createElement("div");
-                        document.body.prepend(loadingEl);
-                        loadingEl.classList.add("page-loader");
-                        loadingEl.classList.add("flex-column");
-                        loadingEl.classList.add("bg-dark");
-                        loadingEl.classList.add("bg-opacity-25");
-                        loadingEl.innerHTML = `
-                                <span class="spinner-border text-primary" role="status"></span>
-                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
-                        KTApp.showPageLoading();
-                        setTimeout(function () {
-                            KTApp.hidePageLoading();
-                            loadingEl.remove();
-                            window.location.reload();
-                        }, 3550);
-                        setTimeout(function () {
-                            toastr.options = {
-                                "debug": false,
-                                "newestOnTop": false,
-                                "progressBar": true,
-                                "positionClass": "toastr-top-center",
-                                "preventDuplicates": false,
-                                "showDuration": "6000",
-                                "hideDuration": "1000",
-                                "timeOut": "1700",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            };
-                            toastr.warning("کاربرگرامی: این مشتری قبلاٌ ثبت شده است.", "هشدار");
-                        }, 1300);
-                        return false;
-                    }
-                    else if (xhr.status == '500') {
-                        const loadingEl = document.createElement("div");
-                        document.body.prepend(loadingEl);
-                        loadingEl.classList.add("page-loader");
-                        loadingEl.classList.add("flex-column");
-                        loadingEl.classList.add("bg-dark");
-                        loadingEl.classList.add("bg-opacity-25");
-                        loadingEl.innerHTML = `
-                                <span class="spinner-border text-primary" role="status"></span>
-                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
-                        KTApp.showPageLoading();
-                        setTimeout(function () {
-                            KTApp.hidePageLoading();
-                            loadingEl.remove();
-                            window.location.reload();
-                        }, 3550);
-                        setTimeout(function () {
-                            toastr.options = {
-                                "debug": false,
-                                "newestOnTop": false,
-                                "progressBar": true,
-                                "positionClass": "toastr-top-center",
-                                "preventDuplicates": false,
-                                "showDuration": "6000",
-                                "hideDuration": "1000",
-                                "timeOut": "1700",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            };
-                            toastr.error("در ثبت اطلاعات مشکلی بوجود آمده است. لطفاً دقایقی دیگر تلاش نمایید.", "خطا");
-                        }, 1300);
-                        return false;
-                    }
                     else if (xhr.status == '400') {
-                        $("#spnvalidate").text("نام مشتری وارد نشده است.");
                         const loadingEl = document.createElement("div");
                         document.body.prepend(loadingEl);
                         loadingEl.classList.add("page-loader");
@@ -708,7 +636,7 @@
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr.info("کاربرگرامی: وارد کردن نام مشتری الزامی است.", "خطا");
+                            toastr.info("کاربرگرامی: لطفاً کلیه اطلاعات مشتری را وارد نمایید.", "خطا");
                         }, 1300);
                         return false;
                     }
@@ -730,11 +658,11 @@
                 headers: { 'Authorization': $("#token").html().trim() },
                 dataType: false,
                 processData: false,
-                //contentType: false,
+                contentType: "application/json; charset=utf-8",
                 data: formDataEditCustomer,
                 dataType: 'json',
                 success: function (xml, textStatus, xhr) {
-                    if (xhr.statusCode == '200') {
+                    if (xhr.status == '200') {
                         // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
                         const loadingEl = document.createElement("div");
                         document.body.prepend(loadingEl);
@@ -771,7 +699,7 @@
                             toastr.info("ویرایش اطلاعات با موفقیت انجام شد.");
                         }, 1300);
                     }
-                    else if (xhr.statusCode == '400') {
+                    else if (xhr.status == '400') {
                         $("#spnvalidateedit").text("اطلاعات ناقص وارد شده است.");
                         return false;
                     }
