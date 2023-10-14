@@ -659,10 +659,10 @@
                 type: 'PUT',
                 url: '@ApiAddress' + "CustomerApi/UpdateCustomerApi",
                 headers: { 'Authorization': $("#token").html().trim() },
+                processData: false,
+                contentType: false,
                 data: formDataEditCustomer,
                 dataType: "json",
-                contentType: false,
-                processData: false,
                 success: function (xml, textStatus, xhr) {
                     if (xhr.status == '200') {
                         // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
