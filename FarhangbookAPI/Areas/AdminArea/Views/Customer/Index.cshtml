@@ -513,10 +513,10 @@
             var serviceUrl = '@ApiAddress' + "CustomerApi/GetById?customerid=" + customerid;
 
             $.ajax({
-                type: "GET",
+                type: 'GET',
                 url: serviceUrl,
                 headers: { 'Authorization': $("#token").html().trim() },
-                dataType: "json",
+                dataType: 'json',
                 success: function (xhr) {
                     $("#CustomerID").val(xhr.data.customerID);
                     $("#FirstNameE").val(xhr.data.firstName);
@@ -662,7 +662,7 @@
                 processData: false,
                 contentType: false,
                 data: formDataEditCustomer,
-                dataType: "json",
+                dataType: 'json',
                 success: function (xml, textStatus, xhr) {
                     if (xhr.status == '200') {
                         // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
