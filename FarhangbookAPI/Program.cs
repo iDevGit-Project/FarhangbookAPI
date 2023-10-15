@@ -50,6 +50,10 @@ builder.Services.AddWebMarkupMin(option =>
   .AddHttpCompression();
 #endregion
 
+#region PWA سرویس مربوط به
+builder.Services.AddProgressiveWebApp();
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

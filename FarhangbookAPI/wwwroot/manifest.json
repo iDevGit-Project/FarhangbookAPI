@@ -1,0 +1,19 @@
+{
+  "name": "باشگاه مشتریان کتابفروشی فرهنگ",
+  "short_name": "باشگاه مشتریان",
+  "description": "باشگاه مشتریان کتابفروشی فرهنگ",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/pwa/img/icon192x192.png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa/img/icon512x512.png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/"
+}
