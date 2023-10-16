@@ -25,14 +25,15 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
             string apiUrl = _config["ApiAddress"] + "GradeStudentsApi/GetGradeStudents";
             GetListApi GA = new GetListApi();
 
-            // ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
-            string jsonfullmodel = await GA.GetApiList(apiUrl, _config["Token"]);
-            dynamic jsondataPars = JObject.Parse(jsonfullmodel);
+			// ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
+			string jsonfullmodel = await GA.GetApiList(apiUrl, _config["JwtTokenValidator"]);
+
+			dynamic jsondataPars = JObject.Parse(jsonfullmodel);
             var model = JsonConvert.DeserializeObject<List<GradeStudentDto>>(jsondataPars.data.ToString());
 
+            ViewBag.UserId = User.FindFirstValue("UserID");
             ViewBag.ApiAddress = _config["ApiAddress"];
-            ViewBag.UserID = _config["UserID"];
-            ViewBag.Token = _config["JwtTokenValidator"];
+            ViewBag.Token = User.FindFirstValue("Token");
             return View(model);
         }
 	}

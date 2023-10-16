@@ -65,8 +65,8 @@ namespace FarhangbookAPI.Controllers
 
 			//return Redirect("https://google.com");
 
-			_config["JwtTokenValidator"] = claims[0].Value;
-			_config["UserID"] = claims[2].Value;
+			//_config["JwtTokenValidator"] = claims[0].Value;
+			//_config["UserID"] = claims[2].Value;
 			//_config["Token"] = claims[0].Value;
 
 

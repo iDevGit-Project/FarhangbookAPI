@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FarhangbookAPI.Areas.AdminArea.Controllers
 {
@@ -7,9 +8,19 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
 	[Authorize(Roles = "admin, user")]
 	public class HomeController : Controller
 	{
-		public IActionResult Index()
+        private readonly IConfiguration _config;
+
+        public HomeController(IConfiguration config)
+        {
+            _config = config;
+        }
+        public IActionResult Index()
 		{
-			return View();
+            ViewBag.UserId = User.FindFirstValue("UserID");
+            ViewBag.ApiAddress = _config["ApiAddress"];
+            ViewBag.Token = User.FindFirstValue("Token");
+
+            return View();
 		}
 	}
 }
