@@ -3,6 +3,8 @@ using FarhangbookAPI.Services.Interface;
 using FarhangbookAPI.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WebMarkupMin.AspNetCore7;
+using FarhangbookAPI.Areas.AdminArea.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,12 +50,15 @@ builder.Services.AddWebMarkupMin(option =>
                 options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
             })
   .AddHttpCompression();
+
 #endregion
 
 #region PWA سرویس مربوط به
 builder.Services.AddProgressiveWebApp();
+
 #endregion
 
+//builder.Services.AddIdentity<ApplicationUsers().AddRoles<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
