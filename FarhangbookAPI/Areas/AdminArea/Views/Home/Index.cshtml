@@ -1,13 +1,7 @@
-﻿@* @using FarhangbookAPI.Areas.AdminArea.Models.Entities;
-@using Microsoft.AspNetCore.Identity;
-@{
-	@inject UserManager<ApplicationUsers> UserManager;
-	var DisplayName = UserManager.Users.FirstOrDefault(m => m.UserName == User.Identity.Name).FirstName;
-} *@
-@* @using FarhangbookAPI.Areas.AdminArea.Models.Entities;
+﻿@using FarhangbookAPI.Areas.AdminArea.Models.Entities;
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<ApplicationUsers> SignInManager
-@inject UserManager<ApplicationUsers> UserManager *@
+@inject UserManager<ApplicationUsers> UserManager
 @{
 	ViewData["Title:"] = "پنل مدیریت | باشگاه مشتریان کتابفروشی فرهنگ";
 }
@@ -37,14 +31,13 @@
 							<span class="fw-semibold text-gray-800 fs-5">
 								نسخه سالیانه : 1403 - 1402
 							</span>
-							@* <span class="fw-semibold fw-bolder text-gray-800 fs-5">کاربرگرامی: @DisplayName خوش آمدید.</span> *@
-							@* <span class="page-desc fs-7 fw-semibold pt-2">کاربرگرامی: @User.Identity.Name خوش آمدید.</span> *@
-							<!--begin::توضیحات-->
-@* 							@if (SignInManager.IsSignedIn(User))
+							<!--begin::مشخصات کاربر وارد شده-->
+							<!--<span class="page-desc fs-7 fw-semibold pt-2">کاربرگرامی: @User.Identity.Name خوش آمدید.</span>-->
+							@if (SignInManager.IsSignedIn(User))
 							{
-							<span class="fw-semibold text-gray-800 fs-5">کاربرگرامی: @DisplayName خوش آمدید.</span>
-							} *@
-							<!--end::توضیحات-->
+								<span class="page-desc fs-7 fw-semibold pt-2">کاربرگرامی: @UserManager.GetUserAsync(User).Result.FirstName خوش آمدید.</span>
+							}
+							<!--begin::مشخصات کاربر وارد شده-->
 						</h1>
 						<!--end::title-->
 						<!--begin::illustration-->
