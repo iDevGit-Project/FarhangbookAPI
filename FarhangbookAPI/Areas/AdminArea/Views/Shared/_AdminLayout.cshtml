@@ -236,5 +236,6 @@
 
 	@await RenderSectionAsync("AdminScripts", false)
 	@await RenderSectionAsync("MainScripts", false)
+	@await Component.InvokeAsync("NToastNotify")
 </body>
 </html>

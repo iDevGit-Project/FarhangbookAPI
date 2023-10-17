@@ -1,7 +1,7 @@
-﻿@using FarhangbookAPI.Areas.AdminArea.Models.Entities;
+﻿@* @using FarhangbookAPI.Areas.AdminArea.Models.Entities;
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<ApplicationUsers> SignInManager
-@inject UserManager<ApplicationUsers> UserManager
+@inject UserManager<ApplicationUsers> UserManager *@
 @{
 	ViewData["Title:"] = "پنل مدیریت | باشگاه مشتریان کتابفروشی فرهنگ";
 }
@@ -33,10 +33,10 @@
 							</span>
 							<!--begin::مشخصات کاربر وارد شده-->
 							<!--<span class="page-desc fs-7 fw-semibold pt-2">کاربرگرامی: @User.Identity.Name خوش آمدید.</span>-->
-							@if (SignInManager.IsSignedIn(User))
+@* 							@if (SignInManager.IsSignedIn(User))
 							{
 								<span class="page-desc fs-7 fw-semibold pt-2">کاربرگرامی: @UserManager.GetUserAsync(User).Result.FirstName خوش آمدید.</span>
-							}
+							} *@
 							<!--begin::مشخصات کاربر وارد شده-->
 						</h1>
 						<!--end::title-->

@@ -4,6 +4,9 @@ using FarhangbookAPI.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WebMarkupMin.AspNetCore7;
 using Microsoft.AspNetCore.Identity;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,9 +61,29 @@ builder.Services.AddProgressiveWebApp();
 
 #endregion
 
+#region و انکود کردن آنها HTML تنظیمات مربوط به کد های
+
+builder.Services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.Arabic }));
+
+#endregion
+
+#region متد های مربوط به نوتیفیکیشن
+builder.Services.AddMvc().AddNToastNotifyNoty(new NotyOptions
+{
+	ProgressBar = true,
+	Timeout = 5000,
+	Theme = "mint"
+});
+
+//Or Simply go
+builder.Services.AddMvc().AddNToastNotifyNoty();
+#endregion
+
+
 // Services Registered Identity
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -77,6 +100,8 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseNToastNotify();
 
 //1
 app.UseAuthentication();
