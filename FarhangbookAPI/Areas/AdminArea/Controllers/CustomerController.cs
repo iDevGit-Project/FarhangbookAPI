@@ -25,7 +25,7 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
             GetListApi GA = new GetListApi();
 
 			// ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
-			string jsonfullmodel = await GA.GetApiList(apiUrl, _config["JwtTokenValidator"]);
+			string jsonfullmodel = await GA.GetApiList(apiUrl, User.FindFirstValue("Token"));
 
 			dynamic jsondataPars = JObject.Parse(jsonfullmodel);
             var model = JsonConvert.DeserializeObject<List<CustomerDto>>(jsondataPars.data.ToString());

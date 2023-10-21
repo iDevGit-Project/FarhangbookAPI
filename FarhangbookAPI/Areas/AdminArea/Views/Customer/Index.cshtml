@@ -32,7 +32,7 @@
                             <span class="card-label fw-bold text-dark">لیست اطلاعات مشتریان</span>
                             <span class="text-muted mt-1 fw-semibold fs-7">لیست مشتریان در برنامه</span>
                         </h3>
-                        <a href="/AdminArea/" class="btn btn-sm btn-light-dark h-40px" data-bs-toggle="tooltip" title="بازگشت به صفحه اصلی">
+                        <a href="/" class="btn btn-sm btn-light-dark h-40px" data-bs-toggle="tooltip" title="بازگشت به صفحه اصلی">
                             <i class="ki-duotone ki-home fs-3">
                             </i>
                             بازگشت
@@ -162,7 +162,8 @@
                             }
                         </tbody>
                     </table>
-                    <div id="kt_datatable_example_buttons" class="d-none"></div>
+                    <!-- دریافت توکن معتبر از کاربر وارد شده به سیستم-->
+                    <div id="token" name="token" hidden>Bearer @ViewBag.Token</div>
                     <!--end::TABELS-->
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12 text-center">
@@ -544,6 +545,7 @@
             $.ajax({
                 type: "GET",
                 url: serviceUrl,
+                headers: { 'Authorization': $("#token").html().trim() },
                 dataType: "json",
                 success: function (xhr) {
                     $("#CustomerID").val(xhr.data.customerID);
@@ -722,6 +724,7 @@
             $.ajax({
                 type: 'Delete',
                 url: '@ApiAddress' + "CustomerApi/DeleteCustomerApi",
+                headers: { 'Authorization': $("#token").html().trim() },
                 data: JSON.stringify(model),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

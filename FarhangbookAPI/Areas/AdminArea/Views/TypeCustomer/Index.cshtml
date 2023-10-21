@@ -135,6 +135,8 @@
 						</tbody>
 					</table>
 					<!--end::TABELS-->
+					<!-- دریافت توکن معتبر از کاربر وارد شده به سیستم-->
+					<div id="token" name="token" hidden>Bearer @ViewBag.Token</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-12 text-center">
 							<h3 class="card-title align-items-start flex-column">
@@ -356,6 +358,7 @@
 			$.ajax({
 				type: "GET",
 				url: serviceUrl,
+				headers: { 'Authorization': $("#token").html().trim() },
 				dataType: "json",
 				success: function (xhr) {
 					$("#typeCustomerid").val(xhr.data.typeCustomerID);
@@ -374,8 +377,6 @@
 			$.ajax({
 				type: 'Post',
 				url: '@ApiAddress' + "TypeCustomerApi/CreateTypeCustomersApi",
-
-				// دریافت توکن معتبر از کاربر وارد شده به سیستم جهت انجام عملیات
 				headers: { 'Authorization': $("#token").html().trim() },
 				data: { typecustomerName: $("#TypeCustomerName").val(), userid: $("#UserID").val() },
 				success: function (xml, textStatus, xhr) {
@@ -602,6 +603,7 @@
 			$.ajax({
 				type: 'Delete',
 				url: '@ApiAddress' + "TypeCustomerApi/DeleteTypeCustomerApi",
+				headers: { 'Authorization': $("#token").html().trim() },
 				data: JSON.stringify(model),
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",

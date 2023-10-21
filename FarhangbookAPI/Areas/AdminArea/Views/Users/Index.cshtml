@@ -148,6 +148,8 @@
                             }
                         </tbody>
                     </table>
+                    <!-- دریافت توکن معتبر از کاربر وارد شده به سیستم-->
+                    <div id="token" name="token" hidden>Bearer @ViewBag.Token</div>
                     <!--end::TABELS-->
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12 text-center">
@@ -503,6 +505,7 @@
             $.ajax({
                 type: 'GET',
                 url: '@ApiAddress' + 'UsersApi/GetById?userid=' + userid,
+                headers: { 'Authorization': $("#token").html().trim() },
                 dataType: 'json',
                 success: function (xhr) {
                     $("#UserId").val(xhr.data.id);
@@ -530,6 +533,7 @@
             $.ajax({
                 type: "GET",
                 url: serviceUrl,
+                headers: { 'Authorization': $("#token").html().trim() },
                 dataType: "json",
                 success: function (xhr) {
                     $("#UserId").val(xhr.data.id);
@@ -548,6 +552,7 @@
 
             $.ajax({
                 url: '@ApiAddress' + "UsersApi/CreateUserApi",
+                headers: { 'Authorization': $("#token").html().trim() },
                 type: 'POST',
                 processData: false,
                 contentType: false,
@@ -715,15 +720,16 @@
             var formDataEditUser = new FormData($("#frmEditUser")[0]);
 
             $.ajax({
-                type: 'PUT',
+                type: 'Put',
                 url: '@ApiAddress' + "UsersApi/UpdateUserApi",
+                headers: { 'Authorization': $("#token").html().trim() },
+                data: formDataEditUser,
+                dataType: "json",
                 processData: false,
                 contentType: false,
-                data: formDataEditUser,
-                dataType: 'json',
                 success: function (xml, textStatus, xhr) {
                     if (xhr.status == '200') {
-                        // نمایش فرم انیمیشن در زمان ویرایش اطلاعات
+                        // نمایش فرم انیمیشن در زمان ثبت اطلاعات
                         const loadingEl = document.createElement("div");
                         document.body.prepend(loadingEl);
                         loadingEl.classList.add("page-loader");
@@ -731,14 +737,14 @@
                         loadingEl.classList.add("bg-dark");
                         loadingEl.classList.add("bg-opacity-25");
                         loadingEl.innerHTML = `
-                                <span class="spinner-border text-primary" role="status"></span>
-                                <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
+                                        <span class="spinner-border text-primary" role="status"></span>
+                                        <span class="text-gray-100 fs-5 mt-5">سیستم در حال بررسی اطلاعات ...</span>`;
                         KTApp.showPageLoading();
                         setTimeout(function () {
                             KTApp.hidePageLoading();
                             loadingEl.remove();
                             window.location.reload();
-                        }, 3600);
+                        }, 3550);
                         setTimeout(function () {
                             toastr.options = {
                                 "debug": false,
@@ -749,14 +755,14 @@
                                 "preventDuplicates": false,
                                 "showDuration": "600",
                                 "hideDuration": "1000",
-                                "timeOut": "1600",
+                                "timeOut": "1800",
                                 "extendedTimeOut": "1000",
                                 "showEasing": "swing",
                                 "hideEasing": "linear",
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr.info("ویرایش اطلاعات با موفقیت انجام شد.");
+                            toastr.success("ثبت اطلاعات با موفقیت انجام شد.");
                         }, 1300);
                     }
                 },
@@ -775,6 +781,7 @@
             $.ajax({
                 type: 'Delete',
                 url: '@ApiAddress' + "CountriesApi/DeleteCountryApi",
+                headers: { 'Authorization': $("#token").html().trim() },
                 data: JSON.stringify(model),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

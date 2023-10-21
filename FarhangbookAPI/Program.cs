@@ -61,22 +61,12 @@ builder.Services.AddProgressiveWebApp();
 
 #endregion
 
-#region و انکود کردن آنها HTML تنظیمات مربوط به کد های
-
-builder.Services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.Arabic }));
-
-#endregion
-
 #region متد های مربوط به نوتیفیکیشن
-builder.Services.AddMvc().AddNToastNotifyNoty(new NotyOptions
+builder.Services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
 {
 	ProgressBar = true,
-	Timeout = 5000,
-	Theme = "mint"
+	PositionClass = ToastPositions.TopCenter
 });
-
-//Or Simply go
-builder.Services.AddMvc().AddNToastNotifyNoty();
 #endregion
 
 

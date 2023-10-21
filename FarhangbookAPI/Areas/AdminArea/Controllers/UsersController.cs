@@ -24,10 +24,10 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
 			string apiUrl = _config["ApiAddress"] + "UsersApi/GetUsers";
 			GetListApi GA = new GetListApi();
 
-			// ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
-			string jsonfullmodel = await GA.GetApiList(apiUrl, _config["JwtTokenValidator"]);
+            // ارسال توکن های معتبر کاربران و دیگر مقادیر به سرور
+            string jsonfullmodel = await GA.GetApiList(apiUrl, User.FindFirstValue("Token"));
 
-			dynamic jsondataPars = JObject.Parse(jsonfullmodel);
+            dynamic jsondataPars = JObject.Parse(jsonfullmodel);
 			var model = JsonConvert.DeserializeObject<List<UserModel>>(jsondataPars.data.ToString());
 
             ViewBag.UserId = User.FindFirstValue("UserID");

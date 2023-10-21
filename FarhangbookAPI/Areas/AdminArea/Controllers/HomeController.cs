@@ -23,12 +23,12 @@ namespace FarhangbookAPI.Areas.AdminArea.Controllers
             ViewBag.ApiAddress = _config["ApiAddress"];
             ViewBag.Token = User.FindFirstValue("Token");
 
-			_toastNotification.AddInfoToastMessage("کاربرگرامی: این برنامه در حال حاظر نسخه آزمایشی می باشد.", new NotyOptions()
+			_toastNotification.AddInfoToastMessage("این برنامه نسخه آزمایشی می باشد.", new ToastrOptions()
 			{
 				ProgressBar = true,
-				Timeout = 6000,
-				Layout = "topCenter",
-				Theme = "metroui"
+				Title = "باشگاه مشتریان کتابفروشی فرهنگ",
+				TimeOut = 3000,
+				PositionClass = ToastPositions.TopCenter
 			});
 
 			return View();
